@@ -9,8 +9,7 @@ public class TargetCalibration : MonoBehaviour
     public GameObject TargetsElbow;
 
     public bool initCalibrationDone { set; get; }
-    public GameObject RealLeftHand;
-    public GameObject RealRightHand;
+    public GameObject RealHandPosition;
 
     // Start is called before the first frame update
     void Start()
@@ -36,23 +35,14 @@ public class TargetCalibration : MonoBehaviour
 
         if(DominantHandPicker.Instance is not null)
         {
-            switch (DominantHandPicker.Instance.dominantHand)
-            {
-                case EDominantHand.Right:
-                    TargetsHand.transform.position = RealRightHand.transform.position;
-                    TargetsHand.transform.rotation = Quaternion.Euler(0, RealRightHand.transform.eulerAngles.y + 90, 0);
-                    break;
-                case EDominantHand.Left:
-                    TargetsHand.transform.position = RealLeftHand.transform.position;
-                    TargetsHand.transform.rotation = Quaternion.Euler(0, RealLeftHand.transform.eulerAngles.y + 90, 180);
-                    break;
-            }
+            RealHandPosition = DominantHandPicker.Instance.RealHandPosition;
+
+            TargetsHand.transform.position = RealHandPosition.transform.position;
+            TargetsHand.transform.rotation = Quaternion.Euler(0, RealHandPosition.transform.eulerAngles.y + 90, DominantHandPicker.Instance.dominantHand == EDominantHand.Right ? 0 : 180);
         }
         else
         {
-            // Default to right dominant hand
-            TargetsHand.transform.position = RealRightHand.transform.position;
-            TargetsHand.transform.rotation = Quaternion.Euler(0, RealRightHand.transform.eulerAngles.y, 0);
+            Debug.LogError("DominantHandPicker is null!");
         }
         initCalibrationDone = true;
     }
@@ -116,7 +106,7 @@ public class TargetCalibration : MonoBehaviour
             }
         }
         // TODO: Set this position as the shoulder position determined by Vicon
-        transform.position = DominantHandPicker.Instance.Shoulder.transform.position;
+        transform.position = DominantHandPicker.Instance.ShoulderAvatar.transform.position;
     }
 
     // Update is called once per frame

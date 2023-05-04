@@ -1,4 +1,5 @@
-Targets Hand Pattern,Send Signal Vibration,Signal Repetitions,Delay Go,Delay Stay,Delay Go Back,Show Chronometer,Show Black Screen,Is Avatar Human Controlled,Elbow Angle Offset,Shoulder Angle Offset,Name,Automatic,Movement Offset
-++/+-/-+/--,TRUE,4,3,2,3,TRUE,FALSE,TRUE,20,10,Test2,FALSE,Raccourcissement
-++/+-/-+/--,TRUE,4,3,2,3,TRUE,FALSE,FALSE,0,0,Test3,FALSE,Congruent
-++/+-/-+/--,TRUE,2,3,2,0,TRUE,TRUE,FALSE,0,0,Test4,FALSE,Congruent
+Targets Hand Pattern,Send Signal Vibration,Signal Repetitions,Delay Go,Delay Stay,Delay Go Back,Show Chronometer,Show Black Screen,Is Avatar Human Controlled,Elbow Angle Offset,Shoulder Angle Offset,Name,Automatic,Movement Offset,Factor
+++/+-/-+/--,TRUE,4,3,2,3,TRUE,FALSE,TRUE,20,10,Test2,FALSE,Raccourcissement,0.5
+++/+-/-+/--,TRUE,4,3,2,3,TRUE,FALSE,FALSE,0,0,Test3,FALSE,Congruent,-0.5
+++/+-/-+/--,TRUE,2,3,2,0,TRUE,TRUE,FALSE,0,0,Test4,FALSE,Congruent,0
+++/+-/-+/--,TRUE,2,3,2,0,TRUE,TRUE,FALSE,0,0,Test4,FALSE,Allongement,0.5

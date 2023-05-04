@@ -24,6 +24,7 @@ public class ExperimentalTrialsCSVReader : MonoBehaviour
         public string Name;
         public bool Automatic;
         public EMovementOffset MovementOffset;
+        public float Factor;
 
         public EMovementOffset getMovementOffset(string movementOffset)
         {
@@ -94,6 +95,7 @@ public class ExperimentalTrialsCSVReader : MonoBehaviour
             experimentalTrialList.experimentalTrials[i].Name = data[numColumns * (i + 1) + 11];
             experimentalTrialList.experimentalTrials[i].Automatic = bool.Parse(data[numColumns * (i + 1) + 12]);
             experimentalTrialList.experimentalTrials[i].MovementOffset = experimentalTrialList.experimentalTrials[i].getMovementOffset(data[numColumns * (i + 1) + 13]);
+            experimentalTrialList.experimentalTrials[i].Factor = float.Parse(data[numColumns * (i + 1) + 14]);
         }
     }
 }

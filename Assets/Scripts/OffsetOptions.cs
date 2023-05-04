@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[Obsolete("Old method to set offsets located on controller. Use RotationOffsetOptions.cs instead for offsets located bones.", false)]
+[Obsolete("Old method to set offsets located on controller. Use FactorOffsetOptions.cs instead for offsets located bones.", false)]
 public class OffsetOptions : MonoBehaviour
 {
     public GameObject LeftVirtualHand;

@@ -19,25 +19,25 @@ public class BoneCalibration_V2 : MonoBehaviour
             {
 
                 case EDominantHand.Left:
-                    activateFastIK(dominantHand.leftElbow);
-                    deactivateFastIK(dominantHand.rightElbow);
+                    activateFastIK(dominantHand.leftElbowAvatar);
+                    deactivateFastIK(dominantHand.rightElbowAvatar);
 
-                    setFastIKOptions(dominantHand.leftHand, 10, 1);
-                    setFastIKOptions(dominantHand.rightHand, 500, 2);
+                    setFastIKOptions(dominantHand.leftHandAvatar, 10, 1);
+                    setFastIKOptions(dominantHand.rightHandAvatar, 500, 2);
 
-                    activateFastIK(dominantHand.leftHand);
-                    activateFastIK(dominantHand.rightHand);
+                    activateFastIK(dominantHand.leftHandAvatar);
+                    activateFastIK(dominantHand.rightHandAvatar);
                     break;
 
                 case EDominantHand.Right:
-                    activateFastIK(dominantHand.rightElbow);
-                    deactivateFastIK(dominantHand.leftElbow);
+                    activateFastIK(dominantHand.rightElbowAvatar);
+                    deactivateFastIK(dominantHand.leftElbowAvatar);
 
-                    setFastIKOptions(dominantHand.rightHand, 10, 1);
-                    setFastIKOptions(dominantHand.leftHand, 500, 2);
+                    setFastIKOptions(dominantHand.rightHandAvatar, 10, 1);
+                    setFastIKOptions(dominantHand.leftHandAvatar, 500, 2);
 
-                    activateFastIK(dominantHand.leftHand);
-                    activateFastIK(dominantHand.rightHand);
+                    activateFastIK(dominantHand.leftHandAvatar);
+                    activateFastIK(dominantHand.rightHandAvatar);
                     break;
             }
         }
@@ -83,15 +83,15 @@ public class BoneCalibration_V2 : MonoBehaviour
     {
         if (Input.GetKeyUp(KeyCode.RightArrow))
         {
-            calibrateEntireArmDistance(0.0005f, dominantHand.leftHand, dominantHand.leftElbow, DominantHandPicker.Instance.dominantHand == EDominantHand.Left);
-            calibrateEntireArmDistance(0.0005f, dominantHand.rightHand, dominantHand.rightElbow, DominantHandPicker.Instance.dominantHand == EDominantHand.Right);
+            calibrateEntireArmDistance(0.0005f, dominantHand.leftHandAvatar, dominantHand.leftElbowAvatar, DominantHandPicker.Instance.dominantHand == EDominantHand.Left);
+            calibrateEntireArmDistance(0.0005f, dominantHand.rightHandAvatar, dominantHand.rightElbowAvatar, DominantHandPicker.Instance.dominantHand == EDominantHand.Right);
             scaleArmature(0.5f);
         }
 
         if (Input.GetKeyUp(KeyCode.LeftArrow))
         {
-            calibrateEntireArmDistance(-0.0005f, dominantHand.leftHand, dominantHand.leftElbow, DominantHandPicker.Instance.dominantHand == EDominantHand.Left);
-            calibrateEntireArmDistance(-0.0005f, dominantHand.rightHand, dominantHand.rightElbow, DominantHandPicker.Instance.dominantHand == EDominantHand.Right);
+            calibrateEntireArmDistance(-0.0005f, dominantHand.leftHandAvatar, dominantHand.leftElbowAvatar, DominantHandPicker.Instance.dominantHand == EDominantHand.Left);
+            calibrateEntireArmDistance(-0.0005f, dominantHand.rightHandAvatar, dominantHand.rightElbowAvatar, DominantHandPicker.Instance.dominantHand == EDominantHand.Right);
             scaleArmature(-0.5f);
         }
     }

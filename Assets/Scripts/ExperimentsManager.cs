@@ -42,9 +42,11 @@ public class ExperimentalTrial
 
     public int signalRepetitions { private set; get; }
 
+    public float factor { private set; get; }
+
     public ExperimentalTrial(string name = "Default", Pattern<ETargetHand> targetsHandPattern = null, bool sendSignalVibration = false, Pattern<MuscleVibrations> musclesPattern = null,
         float delayGo = 3.0f, float delayStay = 1.0f, float delayGoBack = 2.0f, bool showChronometer = false, bool showBlackScreen = false, bool isAvatarHumanControlled = true, int signalRepetitions = 0,
-        EOffset offset = EOffset.Default, float elbowAngleOffset = 0f, float shoulderAngleOffset = 0f, bool isAutomatic = false, EMovementOffset movementOffset = EMovementOffset.Congruent)
+        EOffset offset = EOffset.Default, float elbowAngleOffset = 0f, float shoulderAngleOffset = 0f, bool isAutomatic = false, EMovementOffset movementOffset = EMovementOffset.Congruent, float factor = 0.0f)
     {
         this.name = name;
         this.targetsHandPattern = targetsHandPattern;
@@ -62,6 +64,7 @@ public class ExperimentalTrial
         this.elbowAngleOffset = elbowAngleOffset;
         this.isAutomatic = isAutomatic;
         this.movementOffset = movementOffset;
+        this.factor = factor;
     }
 }
 
@@ -144,6 +147,7 @@ public class ExperimentsManager : MonoBehaviour
     public GameObject TargetsElbow;
     public OffsetOptions offsetOptions;
     public RotationOffsetOptions rotationOffsetOptions;
+    public FactorOffsetOptions factorOffsetOptions;
 
     public VRRigParent VRArmRig;
 
@@ -205,13 +209,13 @@ public class ExperimentsManager : MonoBehaviour
 
         if (DominantHandPicker.Instance != null)
         {
-            Hand = DominantHandPicker.Instance.Hand;
-            VirtualWrist = DominantHandPicker.Instance.VirtualWrist;
-            VirtualElbow = DominantHandPicker.Instance.VirtualElbow;
+            Hand = DominantHandPicker.Instance.HandAvatar;
+            VirtualWrist = DominantHandPicker.Instance.VirtualWristAvatar;
+            VirtualElbow = DominantHandPicker.Instance.VirtualElbowAvatar;
         }
         else
         {
-            Debug.LogError("DominantHandPicker is null in ExperimentManager.cs!");
+            Debug.LogError("DominantHandPicker is null!");
         }
     }
 
@@ -265,7 +269,8 @@ public class ExperimentsManager : MonoBehaviour
                 shoulderAngleOffset: experimentalTrial.ShoulderAngleOffset,
                 signalRepetitions: targetHandList.Count > 0 && experimentalTrial.SendSignalVibration ? targetHandList.Count : experimentalTrial.SignalRepetitions,
                 isAutomatic: experimentalTrial.Automatic,
-                movementOffset: experimentalTrial.MovementOffset
+                movementOffset: experimentalTrial.MovementOffset,
+                factor : experimentalTrial.Factor
             ));
         }
     }
@@ -335,7 +340,7 @@ public class ExperimentsManager : MonoBehaviour
                 selectedTargetElbow = ETargetElbow.R;
                 break;
         }
-        rotationOffsetOptions.setRotationOffsetsOnBones(selectedTargetHand, selectedTargetElbow, selectedExperimentTrial);
+        //rotationOffsetOptions.setRotationOffsetsOnBones(selectedTargetHand, selectedTargetElbow, selectedExperimentTrial);
     }
 
     /// <summary>
@@ -476,9 +481,9 @@ public class ExperimentsManager : MonoBehaviour
 
         //offsetOptions.currentTargetHandSelected = selectedTargetHand.gameObject;
 
-        rotationOffsetOptions.currentTargetHandSelected = selectedTargetHand.gameObject;
+        //rotationOffsetOptions.currentTargetHandSelected = selectedTargetHand.gameObject;
 
-        //selectedTargetHand.GetComponent<AudioSource>().Play();
+        selectedTargetHand.GetComponent<AudioSource>().Play();
     }
 
     /// <summary>
@@ -489,7 +494,7 @@ public class ExperimentsManager : MonoBehaviour
     {
         selectedTargetElbow = TargetsElbow.transform.Find(elbow.ToString());
 
-        rotationOffsetOptions.currentTargetElbowSelected = selectedTargetElbow.gameObject;
+        //rotationOffsetOptions.currentTargetElbowSelected = selectedTargetElbow.gameObject;
 
         selectedTargetElbow.gameObject.SetActive(true);
     }
@@ -598,7 +603,8 @@ public class ExperimentsManager : MonoBehaviour
         VRArmRig.enabled = selectedExperimentTrial.isAvatarHumanControlled;
 
         SetScreenColor(selectedExperimentTrial.showBlackScreen);
-        SetOffset(selectedExperimentTrial.offset);
+        factorOffsetOptions.factor = selectedExperimentTrial.factor;
+        //offsetOptions.offset = selectedExperimentTrial.offset;
 
         Debug.Log(selectedExperimentTrial.name);
     }
@@ -630,7 +636,7 @@ public class ExperimentsManager : MonoBehaviour
     {
         SetAvatarIK(true);
         SetScreenColor(false);
-        SetOffset(EOffset.Default);
+        //offsetOptions.offset = EOffset.Default;
         ArduinoManager.Instance.deactivateVibrations();
         selectedExperimentTrial = null;
         selectedTargetHand = null;

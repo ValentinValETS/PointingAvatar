@@ -1,9 +1,11 @@
 using Assets.Scripts.Enums;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+[Obsolete("Old method to set offsets located on bones or controller. Use FactorOffsetOptions.cs instead for offsets located bones.", false)]
 public class RotationOffsetOptions : MonoBehaviour
 {
     public GameObject TargetsHand;
@@ -13,22 +15,17 @@ public class RotationOffsetOptions : MonoBehaviour
     public GameObject OffsetHand;
     public GameObject OffsetElbow;
 
-    public GameObject LeftVirtualHand;
-    public GameObject RightVirtualHand;
-    public GameObject LeftRealHand;
-    public GameObject RightRealHand;
-
     public GameObject centerTargetHand;
     public GameObject centerTargetElbow;
 
-    public GameObject VirtualElbow;
-    public GameObject RealElbow;
+    public GameObject VirtualElbowPosition;
+    public GameObject RealElbowPosition;
 
     public GameObject currentTargetHandSelected { get; set; }
     public GameObject currentTargetElbowSelected { get; set; }
 
-    private GameObject VirtualHand;
-    private GameObject RealHand;
+    private GameObject VirtualHandPosition;
+    private GameObject RealHandPosition;
 
     private ExperimentalTrial experimentalTrial = null;
 
@@ -37,21 +34,12 @@ public class RotationOffsetOptions : MonoBehaviour
     {
         if (DominantHandPicker.Instance is not null)
         {
-            if (DominantHandPicker.Instance.dominantHand == EDominantHand.Left)
-            {
-                VirtualHand = LeftVirtualHand;
-                RealHand = LeftRealHand;
-            }
-            else
-            {
-                VirtualHand = RightVirtualHand;
-                RealHand = RightRealHand;
-            }
+            VirtualHandPosition = DominantHandPicker.Instance.VirtualHandPosition;
+            RealHandPosition = DominantHandPicker.Instance.RealHandPosition;
         }
         else
         {
-            VirtualHand = RightVirtualHand;
-            RealHand = RightRealHand;
+            Debug.LogError("DominantHandPicker is null!");
         }
     }
 
@@ -62,23 +50,23 @@ public class RotationOffsetOptions : MonoBehaviour
         {
             // With this code, the offset depends only on the distance travelled from the center, so the more it gets further from the center, lerp tends to 1
             float targetDistanceFromCenter = Vector3.Distance(currentTargetHandSelected.transform.position, centerTargetHand.transform.position);
-            float distanceTraveled = Vector3.Distance(RealHand.transform.position, centerTargetHand.transform.position);
+            float distanceTraveled = Vector3.Distance(RealHandPosition.transform.position, centerTargetHand.transform.position);
 
             float lerpValue = Mathf.Clamp01(distanceTraveled / targetDistanceFromCenter);
 
-            VirtualHand.transform.position = Vector3.Lerp(RealHand.transform.position, OffsetHand.transform.position, lerpValue);
+            VirtualHandPosition.transform.position = Vector3.Lerp(RealHandPosition.transform.position, OffsetHand.transform.position, lerpValue);
 
             targetDistanceFromCenter = Vector3.Distance(currentTargetElbowSelected.transform.position, centerTargetElbow.transform.position);
-            distanceTraveled = Vector3.Distance(RealElbow.transform.position, centerTargetElbow.transform.position);
+            distanceTraveled = Vector3.Distance(RealElbowPosition.transform.position, centerTargetElbow.transform.position);
 
             lerpValue = Mathf.Clamp01(distanceTraveled / targetDistanceFromCenter);
 
-            VirtualElbow.transform.position = Vector3.Lerp(RealElbow.transform.position, OffsetElbow.transform.position, lerpValue);
+            VirtualElbowPosition.transform.position = Vector3.Lerp(RealElbowPosition.transform.position, OffsetElbow.transform.position, lerpValue);
         }
         else
         {
-            VirtualHand.transform.position = RealHand.transform.position;
-            VirtualElbow.transform.position = RealElbow.transform.position;
+            VirtualHandPosition.transform.position = RealHandPosition.transform.position;
+            VirtualElbowPosition.transform.position = RealElbowPosition.transform.position;
         }
     }
 
@@ -148,8 +136,8 @@ public class RotationOffsetOptions : MonoBehaviour
         if (experimentalTrial.movementOffset == EMovementOffset.Congruent)
         {
             // Disable the offset by parenting it to the real bones and setting its position to (0,0,0)
-            OffsetElbow.transform.parent = RealElbow.transform;
-            OffsetHand.transform.parent = RealHand.transform;
+            OffsetElbow.transform.parent = RealElbowPosition.transform;
+            OffsetHand.transform.parent = RealHandPosition.transform;
             OffsetElbow.transform.localPosition = new Vector3(0f, 0f, 0f);
             OffsetHand.transform.localPosition = new Vector3(0f, 0f, 0f);
             return;
@@ -166,12 +154,12 @@ public class RotationOffsetOptions : MonoBehaviour
             experimentalTrial.movementOffset == EMovementOffset.Allongement && selectedTargetElbow == ETargetElbow.MM_MP
             ? 1 : -1;
 
-        Vector3 direction = DominantHandPicker.Instance.Elbow.transform.position - DominantHandPicker.Instance.Shoulder.transform.position;
+        Vector3 direction = DominantHandPicker.Instance.ElbowAvatar.transform.position - DominantHandPicker.Instance.ShoulderAvatar.transform.position;
         float angleInDegrees = movementOffset * dominantHand * experimentalTrial.shoulderAngleOffset;
-        Quaternion rotation = Quaternion.AngleAxis(angleInDegrees, Vector3.Cross(direction, DominantHandPicker.Instance.Shoulder.transform.forward).normalized); // TODO: Make sure that Vector3.Cross gives the axis plan that we desire to set offsets
+        Quaternion rotation = Quaternion.AngleAxis(angleInDegrees, Vector3.Cross(direction, DominantHandPicker.Instance.ShoulderAvatar.transform.forward).normalized); // TODO: Make sure that Vector3.Cross gives the axis plan that we desire to set offsets
         Vector3 newDirection = rotation * direction;
-        OffsetElbow.transform.position = DominantHandPicker.Instance.Shoulder.transform.position + newDirection;
-        OffsetElbow.transform.parent = RealElbow.transform;
+        OffsetElbow.transform.position = DominantHandPicker.Instance.ShoulderAvatar.transform.position + newDirection;
+        OffsetElbow.transform.parent = RealElbowPosition.transform;
         // Elbow offset setting
 
         // Hand offset setting
@@ -181,12 +169,12 @@ public class RotationOffsetOptions : MonoBehaviour
             experimentalTrial.movementOffset == EMovementOffset.Raccourcissement && (selectedTargetHand == ETargetHand.PP || selectedTargetHand == ETargetHand.MP)
             ? 1 : -1;
 
-        direction = DominantHandPicker.Instance.Hand.transform.position - DominantHandPicker.Instance.Elbow.transform.position;
+        direction = DominantHandPicker.Instance.HandAvatar.transform.position - DominantHandPicker.Instance.ElbowAvatar.transform.position;
         angleInDegrees = movementOffset * dominantHand * experimentalTrial.elbowAngleOffset;
-        rotation = Quaternion.AngleAxis(angleInDegrees, Vector3.Cross(direction, DominantHandPicker.Instance.Hand.transform.forward).normalized); // TODO: Make sure that Vector3.Cross gives the axis plan that we desire to set offsets
+        rotation = Quaternion.AngleAxis(angleInDegrees, Vector3.Cross(direction, DominantHandPicker.Instance.HandAvatar.transform.forward).normalized); // TODO: Make sure that Vector3.Cross gives the axis plan that we desire to set offsets
         newDirection = rotation * direction;
-        OffsetHand.transform.position = DominantHandPicker.Instance.Elbow.transform.position + newDirection * 1.2f;
-        OffsetHand.transform.parent = RealHand.transform;
+        OffsetHand.transform.position = DominantHandPicker.Instance.ElbowAvatar.transform.position + newDirection * 1.2f;
+        OffsetHand.transform.parent = RealHandPosition.transform;
         // Hand offset setting
     }
 }

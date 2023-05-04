@@ -8,32 +8,42 @@ public class DominantHandPicker : MonoBehaviour
     public GameObject leftController;
     public GameObject rightController;
 
-    public GameObject leftHand;
-    public GameObject rightHand;
+    public GameObject leftRealHandPosition;
+    public GameObject rightRealHandPosition;
 
-    public GameObject leftShoulder;
-    public GameObject rightShoulder;
+    public GameObject leftVirtualHandPosition;
+    public GameObject rightVirtualHandPosition;
 
-    public GameObject leftVirtualWrist;
-    public GameObject rightVirtualWrist;
+    public GameObject leftHandAvatar;
+    public GameObject rightHandAvatar;
 
-    public GameObject leftElbow;
-    public GameObject rightElbow;
+    public GameObject leftShoulderAvatar;
+    public GameObject rightShoulderAvatar;
 
-    public GameObject leftVirtualElbow;
-    public GameObject rightVirtualElbow;
+    public GameObject leftVirtualWristAvatar;
+    public GameObject rightVirtualWristAvatar;
+
+    public GameObject leftElbowAvatar;
+    public GameObject rightElbowAvatar;
+
+    public GameObject leftVirtualElbowAvatar;
+    public GameObject rightVirtualElbowAvatar;
 
     public GameObject Controller { get; private set; }
 
-    public GameObject Hand { get; private set; }
+    public GameObject RealHandPosition { get; private set; }
 
-    public GameObject VirtualWrist { get; private set; }
+    public GameObject VirtualHandPosition { get; private set; }
 
-    public GameObject Elbow { get; private set; }
+    public GameObject HandAvatar { get; private set; }
 
-    public GameObject VirtualElbow { get; private set; }
+    public GameObject VirtualWristAvatar { get; private set; }
 
-    public GameObject Shoulder { get; private set; }
+    public GameObject ElbowAvatar { get; private set; }
+
+    public GameObject VirtualElbowAvatar { get; private set; }
+
+    public GameObject ShoulderAvatar { get; private set; }
 
     public EDominantHand dominantHand = EDominantHand.Right;
 
@@ -60,20 +70,24 @@ public class DominantHandPicker : MonoBehaviour
         switch (dominantHand)
         {
             case EDominantHand.Left:
-                Hand = leftHand;
-                VirtualWrist = leftVirtualWrist;
-                Elbow = leftElbow;
-                VirtualElbow = leftVirtualElbow;
-                Shoulder = leftShoulder;
+                HandAvatar = leftHandAvatar;
+                VirtualWristAvatar = leftVirtualWristAvatar;
+                ElbowAvatar = leftElbowAvatar;
+                VirtualElbowAvatar = leftVirtualElbowAvatar;
+                ShoulderAvatar = leftShoulderAvatar;
                 Controller = leftController;
+                RealHandPosition = leftRealHandPosition;
+                VirtualHandPosition = leftVirtualHandPosition;
                 break;
             case EDominantHand.Right:
-                Hand = rightHand;
-                VirtualWrist = rightVirtualWrist;
-                Elbow = rightElbow;
-                VirtualElbow = rightVirtualElbow;
-                Shoulder = rightShoulder;
+                HandAvatar = rightHandAvatar;
+                VirtualWristAvatar = rightVirtualWristAvatar;
+                ElbowAvatar = rightElbowAvatar;
+                VirtualElbowAvatar = rightVirtualElbowAvatar;
+                ShoulderAvatar = rightShoulderAvatar;
                 Controller = rightController;
+                RealHandPosition = rightRealHandPosition;
+                VirtualHandPosition = rightVirtualHandPosition;
                 break;
         }
     }
