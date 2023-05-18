@@ -2,26 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using System.Globalization;
 
 public class TargetsCoordinatesCSVReader : MonoBehaviour
 {
-    [System.Serializable]
-
-    public class Coordinate
-    {
-        public string ArmPosition;
-        public string BodyPart;
-        public float x;
-        public float z;
-        public int dominantHand;
-    }
-    [System.Serializable]
-
-    public class CoordinateList
-    {
-        public Coordinate[] coordinates;
-    }
-
+    //Récupère les données de positions du bras, dominance, x et z position et les stocke dans une classe Coordinate
     public static TargetsCoordinatesCSVReader Instance { get; private set; }
     public CoordinateList coordinatesList = new CoordinateList();
 
@@ -60,9 +45,9 @@ public class TargetsCoordinatesCSVReader : MonoBehaviour
 
             coordinatesList.coordinates[i].ArmPosition = data[numColumns * (i + 1)];
             coordinatesList.coordinates[i].BodyPart = data[numColumns * (i + 1) + 1];
-            coordinatesList.coordinates[i].x = float.Parse(data[numColumns * (i + 1) + 2]);
-            coordinatesList.coordinates[i].z = float.Parse(data[numColumns * (i + 1) + 3]);
-            coordinatesList.coordinates[i].dominantHand = int.Parse(data[numColumns * (i + 1) + 4]);
+            coordinatesList.coordinates[i].x = float.Parse(data[numColumns * (i + 1) + 2], CultureInfo.InvariantCulture);
+            coordinatesList.coordinates[i].z = float.Parse(data[numColumns * (i + 1) + 3], CultureInfo.InvariantCulture);
+            coordinatesList.coordinates[i].dominantHand = int.Parse(data[numColumns * (i + 1) + 4], CultureInfo.InvariantCulture);
         }
 
     }
@@ -84,4 +69,20 @@ public class TargetsCoordinatesCSVReader : MonoBehaviour
         }
         return (x, z);
     }
+}
+
+[System.Serializable]
+public class Coordinate
+{
+    public string ArmPosition;
+    public string BodyPart;
+    public float x;
+    public float z;
+    public int dominantHand;
+}
+[System.Serializable]
+
+public class CoordinateList
+{
+    public Coordinate[] coordinates;
 }

@@ -5,35 +5,60 @@ using UnityEngine;
 
 public class DominantHandPicker : MonoBehaviour
 {
-    public GameObject leftController;
-    public GameObject rightController;
+    //public GameObject leftController;
+    //public GameObject rightController;
 
-    public GameObject leftHand;
-    public GameObject rightHand;
+    public GameObject leftRealHandPosition;
+    public GameObject rightRealHandPosition;
 
-    public GameObject leftShoulder;
-    public GameObject rightShoulder;
+    public GameObject leftVirtualHandPosition;
+    public GameObject rightVirtualHandPosition;
 
-    public GameObject leftVirtualWrist;
-    public GameObject rightVirtualWrist;
+    public GameObject leftHandIK;
+    public GameObject rightHandIK;
 
-    public GameObject leftElbow;
-    public GameObject rightElbow;
+    //public GameObject leftHandAvatar;
+    //public GameObject rightHandAvatar;
 
-    public GameObject leftVirtualElbow;
-    public GameObject rightVirtualElbow;
+    public GameObject leftRealShoulderPosition;
+    public GameObject rightRealShoulderPosition;
 
-    public GameObject Controller { get; private set; }
+    public GameObject leftVirtualShoulderPosition;
+    public GameObject rightVirtualShoulderPosition;
 
-    public GameObject Hand { get; private set; }
+    //public GameObject leftVirtualWristAvatar;
+    //public GameObject rightVirtualWristAvatar;
 
-    public GameObject VirtualWrist { get; private set; }
+    public GameObject leftRealElbowPosition;
+    public GameObject rightRealElbowPosition;
 
-    public GameObject Elbow { get; private set; }
+    public GameObject leftVirtualElbowPosition;
+    public GameObject rightVirtualElbowPosition;
 
-    public GameObject VirtualElbow { get; private set; }
+    public GameObject leftElbowIK;
+    public GameObject rightElbowIK;
 
-    public GameObject Shoulder { get; private set; }
+
+    //public GameObject Controller { get; private set; }
+
+    public GameObject RealHandPosition { get; private set; }
+
+    public GameObject VirtualHandPosition { get; private set; }
+
+    public GameObject HandIK { get; private set; }
+
+    //public GameObject HandAvatar { get; private set; }
+
+    //public GameObject VirtualWristAvatar { get; private set; }
+
+    public GameObject RealElbowPosition { get; private set; }
+
+    public GameObject VirtualElbowPosition { get; private set; }
+
+    public GameObject ElbowIK { get; private set; }
+
+    public GameObject RealShoulderPosition { get; private set; }
+    public GameObject VirtualShoulderPosition { get; private set; }
 
     public EDominantHand dominantHand = EDominantHand.Right;
 
@@ -60,20 +85,30 @@ public class DominantHandPicker : MonoBehaviour
         switch (dominantHand)
         {
             case EDominantHand.Left:
-                Hand = leftHand;
-                VirtualWrist = leftVirtualWrist;
-                Elbow = leftElbow;
-                VirtualElbow = leftVirtualElbow;
-                Shoulder = leftShoulder;
-                Controller = leftController;
+                //HandAvatar = leftHandAvatar;
+                //VirtualWristAvatar = leftVirtualWristAvatar;
+                RealElbowPosition = leftRealElbowPosition;
+                VirtualElbowPosition = leftVirtualElbowPosition;
+                ElbowIK = leftElbowIK;
+                RealShoulderPosition = leftRealShoulderPosition;
+                VirtualShoulderPosition = leftVirtualShoulderPosition;
+                //Controller = leftController;
+                RealHandPosition = leftRealHandPosition;
+                VirtualHandPosition = leftVirtualHandPosition;
+                HandIK = leftHandIK;
                 break;
             case EDominantHand.Right:
-                Hand = rightHand;
-                VirtualWrist = rightVirtualWrist;
-                Elbow = rightElbow;
-                VirtualElbow = rightVirtualElbow;
-                Shoulder = rightShoulder;
-                Controller = rightController;
+                //HandAvatar = rightHandAvatar;
+                //VirtualWristAvatar = rightVirtualWristAvatar;
+                RealElbowPosition = rightRealElbowPosition;
+                VirtualElbowPosition = rightVirtualElbowPosition;
+                ElbowIK = rightElbowIK;
+                RealShoulderPosition = rightRealShoulderPosition;
+                VirtualShoulderPosition = rightVirtualShoulderPosition;
+                //Controller = rightController;
+                RealHandPosition = rightRealHandPosition;
+                VirtualHandPosition = rightVirtualHandPosition;
+                HandIK = rightHandIK;
                 break;
         }
     }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using Assets.Scripts.Enums;
+using System.Globalization;
 
 public class ExperimentalTrialsCSVReader : MonoBehaviour
 {
@@ -24,6 +25,7 @@ public class ExperimentalTrialsCSVReader : MonoBehaviour
         public string Name;
         public bool Automatic;
         public EMovementOffset MovementOffset;
+        public float Factor;
 
         public EMovementOffset getMovementOffset(string movementOffset)
         {
@@ -71,29 +73,45 @@ public class ExperimentalTrialsCSVReader : MonoBehaviour
 
         string[] data = textAssetData.text.Split(new string[] { ",", "\n" }, StringSplitOptions.None);
 
-        const int numColumns = 14;
+        int numColumns = 15;
         int tableSize = data.Length / numColumns - 1;
         experimentalTrialList.experimentalTrials = new ExperimentalTrial[tableSize];
 
         for (int i = 0; i < tableSize; i++)
 
         {
+            float f;
+            int l;
+            bool b;
             experimentalTrialList.experimentalTrials[i] = new ExperimentalTrial();
-
             experimentalTrialList.experimentalTrials[i].TargetsHandPattern = data[numColumns * (i + 1)];
-            experimentalTrialList.experimentalTrials[i].SendSignalVibration = bool.Parse(data[numColumns * (i + 1) + 1]);
-            experimentalTrialList.experimentalTrials[i].SignalRepetitions = int.Parse(data[numColumns * (i + 1) + 2]);
-            experimentalTrialList.experimentalTrials[i].DelayGo = float.Parse(data[numColumns * (i + 1) + 3]);
-            experimentalTrialList.experimentalTrials[i].DelayStay = float.Parse(data[numColumns * (i + 1) + 4]);
-            experimentalTrialList.experimentalTrials[i].DelayGoBack = float.Parse(data[numColumns * (i + 1) + 5]);
-            experimentalTrialList.experimentalTrials[i].ShowChronometer = bool.Parse(data[numColumns * (i + 1) + 6]);
-            experimentalTrialList.experimentalTrials[i].ShowBlackScreen = bool.Parse(data[numColumns * (i + 1) + 7]);
-            experimentalTrialList.experimentalTrials[i].IsAvatarHumanControlled = bool.Parse(data[numColumns * (i + 1) + 8]);
-            experimentalTrialList.experimentalTrials[i].ElbowAngleOffset = float.Parse(data[numColumns * (i + 1) + 9]);
-            experimentalTrialList.experimentalTrials[i].ShoulderAngleOffset = float.Parse(data[numColumns * (i + 1) + 10]);
+            bool.TryParse(data[numColumns * (i + 1) + 1].ToString(CultureInfo.InvariantCulture), out b);
+            experimentalTrialList.experimentalTrials[i].SendSignalVibration = b;
+            int.TryParse(data[numColumns * (i + 1) + 2], NumberStyles.Any,CultureInfo.InvariantCulture, out l);
+            experimentalTrialList.experimentalTrials[i].SignalRepetitions = l;
+            Debug.Log(experimentalTrialList.experimentalTrials[i].SignalRepetitions);
+            float.TryParse(data[numColumns * (i + 1) + 3], NumberStyles.Any, CultureInfo.InvariantCulture, out f);
+            experimentalTrialList.experimentalTrials[i].DelayGo = f;
+            float.TryParse(data[numColumns * (i + 1) + 4], NumberStyles.Any, CultureInfo.InvariantCulture, out f);
+            experimentalTrialList.experimentalTrials[i].DelayStay = f;
+            float.TryParse(data[numColumns * (i + 1) + 5], NumberStyles.Any, CultureInfo.InvariantCulture, out f);
+            experimentalTrialList.experimentalTrials[i].DelayGoBack = f;
+            bool.TryParse(data[numColumns * (i + 1) + 6].ToString(CultureInfo.InvariantCulture), out b);
+            experimentalTrialList.experimentalTrials[i].ShowChronometer = b;
+            bool.TryParse(data[numColumns * (i + 1) + 7].ToString(CultureInfo.InvariantCulture), out b);
+            experimentalTrialList.experimentalTrials[i].ShowBlackScreen = b;
+            bool.TryParse(data[numColumns * (i + 1) + 8].ToString(CultureInfo.InvariantCulture), out b);
+            experimentalTrialList.experimentalTrials[i].IsAvatarHumanControlled = b;
+            float.TryParse(data[numColumns * (i + 1) + 9], NumberStyles.Any, CultureInfo.InvariantCulture, out f);
+            experimentalTrialList.experimentalTrials[i].ElbowAngleOffset = f;
+            float.TryParse(data[numColumns * (i + 1) + 10], NumberStyles.Any, CultureInfo.InvariantCulture, out f);
+            experimentalTrialList.experimentalTrials[i].ShoulderAngleOffset = f;
             experimentalTrialList.experimentalTrials[i].Name = data[numColumns * (i + 1) + 11];
-            experimentalTrialList.experimentalTrials[i].Automatic = bool.Parse(data[numColumns * (i + 1) + 12]);
+            bool.TryParse(data[numColumns * (i + 1) + 12].ToString(CultureInfo.InvariantCulture), out b);
+            experimentalTrialList.experimentalTrials[i].Automatic = b;
             experimentalTrialList.experimentalTrials[i].MovementOffset = experimentalTrialList.experimentalTrials[i].getMovementOffset(data[numColumns * (i + 1) + 13]);
+            float.TryParse(data[numColumns * (i + 1) + 14], NumberStyles.Any, CultureInfo.InvariantCulture, out f);
+            experimentalTrialList.experimentalTrials[i].Factor = f;
         }
     }
 }
