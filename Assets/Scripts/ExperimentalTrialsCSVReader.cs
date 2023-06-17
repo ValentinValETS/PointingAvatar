@@ -72,7 +72,7 @@ public class ExperimentalTrialsCSVReader : MonoBehaviour
 
         string[] data = textAssetData.text.Split(new string[] { ",", "\n" }, StringSplitOptions.None);
 
-        const int numColumns = 14;
+        const int numColumns = 15;
         int tableSize = data.Length / numColumns - 1;
         experimentalTrialList.experimentalTrials = new ExperimentalTrial[tableSize];
 
