@@ -28,59 +28,59 @@
 
         ![Arduino Pin Configuration: A Detailed Guide (2021) \| Robu.in](media/e792b1dc6cf3e99113daac0f3a2df23a.jpeg)
 
-    2.  **Signal Répétitions :**
-        -   This option specifies the number of signal repetitions that will be sent by the Arduino.
-        -   Possible choices are : [0, ∞[.
-        -   **The actual number of signals sent will be determined by the number of targets specified in the "Targets Hand Pattern" if it exists.**
+2.  **Signal Répétitions :**
+    -   This option specifies the number of signal repetitions that will be sent by the Arduino.
+    -   Possible choices are : [0, ∞[.
+    -   **The actual number of signals sent will be determined by the number of targets specified in the "Targets Hand Pattern" if it exists.**
 
-            **Exemples :**
+        **Exemples :**
 
-            -   The signal will be sent **4 times**.
+        -   The signal will be sent **4 times**.
 
-                ![Graphical user interface, text Description automatically generated with medium confidence](media/fab23a0958f15cbf4a33ec464bc9531c.png)
+            ![Graphical user interface, text Description automatically generated with medium confidence](media/fab23a0958f15cbf4a33ec464bc9531c.png)
 
-            -   The signal will be sent **4 times**.
+        -   The signal will be sent **4 times**.
 
-                ![A picture containing text Description automatically generated](media/500c524fa558bc2b67bbcf262311e1b1.png)
+            ![A picture containing text Description automatically generated](media/500c524fa558bc2b67bbcf262311e1b1.png)
 
-            -   The signal will be sent **2 times**.
+        -   The signal will be sent **2 times**.
 
-                ![A picture containing text Description automatically generated](media/de4e591d6fd66888451fddaabcac337a.png)
+            ![A picture containing text Description automatically generated](media/de4e591d6fd66888451fddaabcac337a.png)
 
-            -   The signal will be sent **4 times**.
+        -   The signal will be sent **4 times**.
 
-                ![A picture containing shape Description automatically generated](media/4545a73f098803313235730b1bff16fd.png)
+            ![A picture containing shape Description automatically generated](media/4545a73f098803313235730b1bff16fd.png)
 
-    3.  **Delay go :**
-        -   This option specifies the time in seconds for the "move towards the target" motion.
-        -   The green bar of the timer will progress throughout this time.
-        -   Possible choices are : [0.0, ∞[.
-    4.  **Delay stay :**
-        -   This option specifies the time in seconds that the participant must stay on the target.
-        -   The timer will be visible, however, the green bar will be hidden, indicating to the participant to stay on the target.
-        -   Possible choices are : [0.0, ∞[.
-    5.  **Delay Go Back :**
-        -   This option specifies the time in seconds that the participant has to return to the initial target.
-        -   The timer will disappear once this time has elapsed.
-        -   Possible choices are : [0.0, ∞[.
-    6.  **Show chronometer**
-        -   This option specifies whether we want the timer to be visible or not. It is recommended to keep it visible because otherwise the patient will not have feedback for the timing.
-        -   Possible choices are : TRUE, FALSE.
-        -   **Attention**: It is important that the characters remain in **uppercase**.
-    7.  **Show Black Screen :**
-        -   This option allows hiding the display in the virtual reality headset so that the participant does not see anything during the experience, with a black screen displayed instead.
-        -   It should be noted that the experimenter will be able to see what is projected on the screen while the participant will not see anything.
-    8.  **Is Avatar Human Controlled :**
-        -   This option allows the program to control the avatar automatically.
-        -   Possible choices are : TRUE, FALSE.
-        -   **Attention**: It is important that the characters remain in **uppercase**.
-    9.  **Elbow Angle Offset :** « Hand overshoot »
-    10. **Shoulder Angle Offset :** «Elbow overshoot»
-        -   These options determine the maximum angle of overshoot or offset that will be applied to the virtual avatar.
-        -   Possible choices are : [0.0, ∞[.
-        -   System explication :
+3.  **Delay go :**
+    -   This option specifies the time in seconds for the "move towards the target" motion.
+    -   The green bar of the timer will progress throughout this time.
+    -   Possible choices are : [0.0, ∞[.
+4.  **Delay stay :**
+    -   This option specifies the time in seconds that the participant must stay on the target.
+    -   The timer will be visible, however, the green bar will be hidden, indicating to the participant to stay on the target.
+    -   Possible choices are : [0.0, ∞[.
+5.  **Delay Go Back :**
+    -   This option specifies the time in seconds that the participant has to return to the initial target.
+    -   The timer will disappear once this time has elapsed.
+    -   Possible choices are : [0.0, ∞[.
+6.  **Show chronometer**
+    -   This option specifies whether we want the timer to be visible or not. It is recommended to keep it visible because otherwise the patient will not have feedback for the timing.
+    -   Possible choices are : TRUE, FALSE.
+    -   **Attention**: It is important that the characters remain in **uppercase**.
+7.  **Show Black Screen :**
+    -   This option allows hiding the display in the virtual reality headset so that the participant does not see anything during the experience, with a black screen displayed instead.
+    -   It should be noted that the experimenter will be able to see what is projected on the screen while the participant will not see anything.
+8.  **Is Avatar Human Controlled :**
+    -   This option allows the program to control the avatar automatically.
+    -   Possible choices are : TRUE, FALSE.
+    -   **Attention**: It is important that the characters remain in **uppercase**.
+9.  **Elbow Angle Offset :** « Hand overshoot »
+10. **Shoulder Angle Offset :** «Elbow overshoot»
+    -   These options determine the maximum angle of overshoot or offset that will be applied to the virtual avatar.
+    -   Possible choices are : [0.0, ∞[.
+    -   System explication :
 
-                A = min(D1/D2 * B, 1)
+            A = min(D1/D2 * B, 1)
 
 A = Angle of overshoot or "offset" of the hand
 
@@ -131,34 +131,34 @@ a = The value for the factor of the joint angle determined in the **experimental
 4.  To change the participant's dominant hand and ensure that the targets are placed on the correct side of the participant, you simply need to modify the value in the next cell.
 ![](media/808d7d3fdd2ee7c5ba1afeb925ad0076.png)
 5.  When you modify the arm measurements and dominant hand, the graph will update and show you the new positions of the targets. **The shoulder position corresponds to the original position**. The values indicated in the CSVforUnity worksheet will also be updated. **Attention: it is now important to follow the instructions carefully to transfer the data to Unity correctly.**
-    -  Select the worksheet named **CSVforUnity**.
+    1.  Select the worksheet named **CSVforUnity**.
     ![Graphical user interface, chart, application Description automatically generated](media/dabb39a1093074d633bd3a4be81c97cc.png)
 
-    -  This page will be displayed. **Attention: do not change the values in this worksheet. Only modify the important values in the XLSX worksheet.**
+    2.  This page will be displayed. **Attention: do not change the values in this worksheet. Only modify the important values in the XLSX worksheet.**
     ![Graphical user interface, application, table, Excel Description automatically generated](media/680a01fb1304358bdfb9e9153f5803da.png)
 
     \*The values of Arm Position "pointR", "pointPP", etc. correspond to the values indicated in the graph of the XLSX worksheet. For example, the point R for the Body Part "hand" corresponds to the position indicated by "Hand ++", and the point PP for the Body Part "elbow" corresponds to the position indicated by "Elbow +- and ++". The x and z values will correspond to the Unity positions for that specific point.
     ![Chart, line chart Description automatically generated](media/156c9d4cf94c52d2eec5a4e08ff35487.png)
 
-    -  Press the "File" tab.
+    3.  Press the "File" tab.
     ![Graphical user interface, application, table, Excel Description automatically generated](media/654e22f3c6715670651cfce197dfd042.png)
 
-    -   Press the "Save As" tab.
+    4.   Press the "Save As" tab.
     ![Table Description automatically generated](media/a0c25fe10257ceae6b7ebebd8852a19c.png)
 
-    -  Select the saving options.
+    5.  Select the saving options.
     ![Graphical user interface Description automatically generated](media/632561da2c46b94dba7efd101e1a75ff.png)
 
-    -  Select the CSV (Comma delimited) option (*.csv) and click on "Save."
+    6.  Select the CSV (Comma delimited) option (*.csv) and click on "Save."
     ![Graphical user interface, text, application, email Description automatically generated](media/c6f6bfa8e974499f24445444124498f5.png)
 
-    -  Click on "OK" if the file already exists.
+    7.  Click on "OK" if the file already exists.
     ![Graphical user interface, application Description automatically generated](media/23202041a0007fd787a6275931f3352c.png)
 
-    -  Click on "OK" again.
+    8.  Click on "OK" again.
     ![Table Description automatically generated](media/607a07bfa41b389d05ff07dffb1b89ea.png)
 
-    -  Click on the "x" button to close the document. The "Save" option will still be displayed, so click on it again. **It is important to close the document before proceeding.**
+    9.  Click on the "x" button to close the document. The "Save" option will still be displayed, so click on it again. **It is important to close the document before proceeding.**
     ![Graphical user interface, application, table, Excel Description automatically generated](media/410f6fcabf2e3716b04827abadab34d4.png)
 
 # Unity
@@ -171,8 +171,8 @@ a = The value for the factor of the joint angle determined in the **experimental
 3.  Press on **"Play".**
 ![A screenshot of a computer Description automatically generated with medium confidence](media/715654308ad685840489e6061b681f2b.png)
 4.  This screen will appear. Press the following keys exactly in this order:
-    -  Click the left mouse button **in the scene.**
-    -  « C » on the keyboard **for calibration**
+    1.  Click the left mouse button **in the scene.**
+    2.  « C » on the keyboard **for calibration**
     ![Graphical user interface, text, application Description automatically generated](media/83e791eaa0c24becea416bacb54ae08b.png)
 
     This option will place the targets in the scene according to the specified configuration in the file "visualisation_combinaison.xlsx". Please click on the "Scene" tab, and then you can right-click in the scene **(focus has to be on the game)**, move using W A S D, and use the mouse to navigate within the scene. The scroll wheel can be used to change the movement speed.
