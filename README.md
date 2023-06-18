@@ -1,4 +1,4 @@
-# GUIDE D’UTILISATION
+# USER GUIDE
 
 # Experimental Trials
 
