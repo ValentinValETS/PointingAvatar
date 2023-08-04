@@ -61,7 +61,7 @@ public class TargetCalibration : MonoBehaviour
     /// This method of calibration puts the targets at +/- 30 degrees of flexion/extension for elbow and shoulder.
     /// <see link="visualisation_combinaison.xlsx"/>
     /// </summary>
-    void InitialCalibration_V2()
+    public void InitialCalibration_V2()
     {
         CameraCalibrationEvent();
 

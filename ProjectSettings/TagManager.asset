@@ -3,7 +3,13 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Avatar
+  - Original
+  - HandTargetIK.L
+  - HandTargetIK.R
+  - ElbowTargetIK.L
+  - ElbowTargetIK.R
   layers:
   - Default
   - TransparentFX

@@ -1,0 +1,27 @@
+# Written by MakeHuman 1.1.1
+version v1.1.1
+tags moi_test
+camera 2.5 28.0 0.290764278497 0.0488922624056 -0.334470484506 1.225
+modifier macrodetails-universal/Muscle 0.765000
+modifier macrodetails/African 0.000000
+modifier macrodetails-proportions/BodyProportions 0.500000
+modifier macrodetails/Gender 1.000000
+modifier macrodetails-height/Height 0.500000
+modifier breast/BreastSize 0.500000
+modifier macrodetails/Age 0.500000
+modifier macrodetails/Asian 0.000000
+modifier macrodetails/Caucasian 1.000000
+modifier macrodetails-universal/Weight 0.395000
+skeleton unity.mhskel
+eyebrows eyebrow001 9c81ec3a-faa5-4c94-9cdb-992300ba3084
+eyes Low-Poly 1cc97a30-85a1-42e6-a9f7-b3e753732baa
+pose tpose.bvh
+clothes Full_beard f06387f9-3365-493d-bee6-72bc33013936
+clothes Moustache 8dbdff2d-495f-4dd6-8f27-5898ae4a3ad9
+clothes RunningShoes e57655db-9408-43ed-a795-971c115219fe
+clothes M_Swimming_trunks_01 0f0f99b6-70fa-4f0d-b56a-b4b47eb973ad
+clothes m_wifebeater_elv1 3077e09d-1175-4b99-a97a-4436d6f9c54d
+clothesHideFaces True
+skinMaterial skins/young_caucasian_male/young_caucasian_male.mhmat
+material Low-Poly 1cc97a30-85a1-42e6-a9f7-b3e753732baa eyes/materials/brown.mhmat
+subdivide False

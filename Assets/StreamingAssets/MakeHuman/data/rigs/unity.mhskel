@@ -1,0 +1,1696 @@
+{
+    "bones": {
+        "chest": {
+            "head": "chest_head",
+            "parent": "spine",
+            "reference": ["spine02"],
+            "roll": -6.143906006172983e-08,
+            "tail": "chest_tail"
+        },
+        "chest1": {
+            "head": "chest1_head",
+            "parent": "chest",
+            "reference": ["spine01"],
+            "roll": -1.097262385119091e-11,
+            "tail": "chest1_tail"
+        },
+        "eye.L": {
+            "head": "eye.L_head",
+            "parent": "head",
+            "reference": ["eye.L"],
+            "roll": 0.04707758128643036,
+            "weights_reference": ["eye.L","special05.L"],
+            "tail": "eye.L_tail"
+        },
+        "eye.R": {
+            "head": "eye.R_head",
+            "parent": "head",
+            "reference": ["eye.R"],
+            "roll": -0.04707758128643036,
+            "weights_reference": ["eye.R","special05.R"],
+            "tail": "eye.R_tail"
+        },
+        "f_index.01.L": {
+            "head": "f_index.01.L_head",
+            "parent": "hand.L",
+            "reference": ["finger2-1.L"],
+            "roll": -0.7064877152442932,
+            "tail": "f_index.01.L_tail"
+        },
+        "f_index.01.R": {
+            "head": "f_index.01.R_head",
+            "parent": "hand.R",
+            "reference": ["finger2-1.R"],
+            "roll": 0.7064877152442932,
+            "tail": "f_index.01.R_tail"
+        },
+        "f_index.02.L": {
+            "head": "f_index.02.L_head",
+            "parent": "f_index.01.L",
+            "reference": ["finger2-2.L"],
+            "roll": -1.0015888214111328,
+            "tail": "f_index.02.L_tail"
+        },
+        "f_index.02.R": {
+            "head": "f_index.02.R_head",
+            "parent": "f_index.01.R",
+            "reference": ["finger2-2.R"],
+            "roll": 1.0015888214111328,
+            "tail": "f_index.02.R_tail"
+        },
+        "f_index.03.L": {
+            "head": "f_index.03.L_head",
+            "parent": "f_index.02.L",
+            "reference": ["finger2-3.L"],
+            "roll": -1.0090924501419067,
+            "tail": "f_index.03.L_tail"
+        },
+        "f_index.03.R": {
+            "head": "f_index.03.R_head",
+            "parent": "f_index.02.R",
+            "reference": ["finger2-3.R"],
+            "roll": 1.0090924501419067,
+            "tail": "f_index.03.R_tail"
+        },
+        "f_middle.01.L": {
+            "head": "f_middle.01.L_head",
+            "parent": "hand.L",
+            "reference": ["finger3-1.L"],
+            "roll": -0.18284985423088074,
+            "tail": "f_middle.01.L_tail"
+        },
+        "f_middle.01.R": {
+            "head": "f_middle.01.R_head",
+            "parent": "hand.R",
+            "reference": ["finger3-1.R"],
+            "roll": 0.18284985423088074,
+            "tail": "f_middle.01.R_tail"
+        },
+        "f_middle.02.L": {
+            "head": "f_middle.02.L_head",
+            "parent": "f_middle.01.L",
+            "reference": ["finger3-2.L"],
+            "roll": -0.6355217695236206,
+            "tail": "f_middle.02.L_tail"
+        },
+        "f_middle.02.R": {
+            "head": "f_middle.02.R_head",
+            "parent": "f_middle.01.R",
+            "reference": ["finger3-2.R"],
+            "roll": 0.6355217695236206,
+            "tail": "f_middle.02.R_tail"
+        },
+        "f_middle.03.L": {
+            "head": "f_middle.03.L_head",
+            "parent": "f_middle.02.L",
+            "reference": ["finger3-3.L"],
+            "roll": -0.595303475856781,
+            "tail": "f_middle.03.L_tail"
+        },
+        "f_middle.03.R": {
+            "head": "f_middle.03.R_head",
+            "parent": "f_middle.02.R",
+            "reference": ["finger3-3.R"],
+            "roll": 0.595303475856781,
+            "tail": "f_middle.03.R_tail"
+        },
+        "f_pinky.01.L": {
+            "head": "f_pinky.01.L_head",
+            "parent": "hand.L",
+            "reference": ["finger5-1.L"],
+            "roll": -0.17082808911800385,
+            "tail": "f_pinky.01.L_tail"
+        },
+        "f_pinky.01.R": {
+            "head": "f_pinky.01.R_head",
+            "parent": "hand.R",
+            "reference": ["finger5-1.R"],
+            "roll": 0.17082808911800385,
+            "tail": "f_pinky.01.R_tail"
+        },
+        "f_pinky.02.L": {
+            "head": "f_pinky.02.L_head",
+            "parent": "f_pinky.01.L",
+            "reference": ["finger5-2.L"],
+            "roll": -0.5542842149734497,
+            "tail": "f_pinky.02.L_tail"
+        },
+        "f_pinky.02.R": {
+            "head": "f_pinky.02.R_head",
+            "parent": "f_pinky.01.R",
+            "reference": ["finger5-2.R"],
+            "roll": 0.5542842149734497,
+            "tail": "f_pinky.02.R_tail"
+        },
+        "f_pinky.03.L": {
+            "head": "f_pinky.03.L_head",
+            "parent": "f_pinky.02.L",
+            "reference": ["finger5-3.L"],
+            "roll": -0.5284829139709473,
+            "tail": "f_pinky.03.L_tail"
+        },
+        "f_pinky.03.R": {
+            "head": "f_pinky.03.R_head",
+            "parent": "f_pinky.02.R",
+            "reference": ["finger5-3.R"],
+            "roll": 0.5284829139709473,
+            "tail": "f_pinky.03.R_tail"
+        },
+        "f_ring.01.L": {
+            "head": "f_ring.01.L_head",
+            "parent": "hand.L",
+            "reference": ["finger4-1.L"],
+            "roll": 0.1281958520412445,
+            "tail": "f_ring.01.L_tail"
+        },
+        "f_ring.01.R": {
+            "head": "f_ring.01.R_head",
+            "parent": "hand.R",
+            "reference": ["finger4-1.R"],
+            "roll": -0.1281958520412445,
+            "tail": "f_ring.01.R_tail"
+        },
+        "f_ring.02.L": {
+            "head": "f_ring.02.L_head",
+            "parent": "f_ring.01.L",
+            "reference": ["finger4-2.L"],
+            "roll": -0.4322725832462311,
+            "tail": "f_ring.02.L_tail"
+        },
+        "f_ring.02.R": {
+            "head": "f_ring.02.R_head",
+            "parent": "f_ring.01.R",
+            "reference": ["finger4-2.R"],
+            "roll": 0.4322725832462311,
+            "tail": "f_ring.02.R_tail"
+        },
+        "f_ring.03.L": {
+            "head": "f_ring.03.L_head",
+            "parent": "f_ring.02.L",
+            "reference": ["finger4-3.L"],
+            "roll": -0.3292544186115265,
+            "tail": "f_ring.03.L_tail"
+        },
+        "f_ring.03.R": {
+            "head": "f_ring.03.R_head",
+            "parent": "f_ring.02.R",
+            "reference": ["finger4-3.R"],
+            "roll": 0.3292544186115265,
+            "tail": "f_ring.03.R_tail"
+        },
+        "foot.L": {
+            "head": "foot.L_head",
+            "parent": "shin.L",
+            "reference": ["foot.L"],
+            "roll": 0.20731236040592194,
+            "tail": "foot.L_tail"
+        },
+        "foot.R": {
+            "head": "foot.R_head",
+            "parent": "shin.R",
+            "reference": ["foot.R"],
+            "roll": -0.20731236040592194,
+            "tail": "foot.R_tail"
+        },
+        "forearm.L": {
+            "head": "forearm.L_head",
+            "parent": "upper_arm.L",
+            "reference": ["lowerarm01.L","lowerarm02.L"],
+            "roll": 1.6184080839157104,
+            "tail": "forearm.L_tail"
+        },
+        "forearm.R": {
+            "head": "forearm.R_head",
+            "parent": "upper_arm.R",
+            "reference": ["lowerarm01.R","lowerarm02.R"],
+            "roll": -1.6184080839157104,
+            "tail": "forearm.R_tail"
+        },
+        "hand.L": {
+            "head": "hand.L_head",
+            "parent": "forearm.L",
+            "reference": ["wrist.L","metacarpal2.L"],
+            "weights_reference": ["wrist.L","metacarpal1.L","metacarpal2.L","metacarpal3.L","metacarpal4.L"],
+            "roll": -0.5689927339553833,
+            "tail": "hand.L_tail"
+        },
+        "hand.R": {
+            "head": "hand.R_head",
+            "parent": "forearm.R",
+            "reference": ["wrist.R","metacarpal2.R"],
+            "weights_reference": ["wrist.R","metacarpal1.R","metacarpal2.R","metacarpal3.R","metacarpal4.R"],
+            "roll": 0.5689927339553833,
+            "tail": "hand.R_tail"
+        },
+        "head": {
+            "head": "head_head",
+            "parent": "neck",
+            "reference": ["head"],
+            "roll": -3.3251599390604625e-11,
+            "tail": "head_tail"
+        },
+        "hips": {
+            "head": "hips_head",
+            "parent": null,
+            "reference": ["root","spine04","spine05"],
+            "roll": -4.466459702090475e-10,
+            "weights_reference": ["root","spine04","spine05","pelvis.R","pelvis.L"],
+            "tail": "hips_tail"
+        },
+        "jaw": {
+            "head": "jaw_head",
+            "parent": "head",
+            "reference": ["jaw"],
+            "roll": -3.141592502593994,
+            "tail": "jaw_tail"
+        },
+        "lolid.L": {
+            "head": "lolid.L_head",
+            "parent": "head",
+            "reference": ["orbicularis04.L"],
+            "roll": 0.051476847380399704,
+            "tail": "lolid.L_tail"
+        },
+        "lolid.R": {
+            "head": "lolid.R_head",
+            "parent": "head",
+            "reference": ["orbicularis04.R"],
+            "roll": -0.051476847380399704,
+            "tail": "lolid.R_tail"
+        },
+        "neck": {
+            "head": "neck_head",
+            "parent": "chest1",
+            "reference": ["neck01","neck02","neck03"],
+            "roll": 0.0,
+            "tail": "neck_tail"
+        },
+        "shin.L": {
+            "head": "shin.L_head",
+            "parent": "thigh.L",
+            "reference": ["lowerleg01.L","lowerleg02.L"],
+            "roll": -2.3840739727020264,
+            "tail": "shin.L_tail"
+        },
+        "shin.R": {
+            "head": "shin.R_head",
+            "parent": "thigh.R",
+            "reference": ["lowerleg01.R","lowerleg02.R"],
+            "roll": 2.3840739727020264,
+            "tail": "shin.R_tail"
+        },
+        "shoulder.L": {
+            "head": "shoulder.L_head",
+            "parent": "chest1",
+            "reference": ["clavicle.L","shoulder01.L"],
+            "roll": 3.1415927410125732,
+            "tail": "shoulder.L_tail"
+        },
+        "shoulder.R": {
+            "head": "shoulder.R_head",
+            "parent": "chest1",
+            "reference": ["clavicle.R","shoulder01.R"],
+            "roll": -3.1415927410125732,
+            "tail": "shoulder.R_tail"
+        },
+        "spine": {
+            "head": "spine_head",
+            "parent": "hips",
+            "reference": ["spine03"],
+            "roll": -2.192008373884128e-16,
+            "tail": "spine_tail"
+        },
+        "thigh.L": {
+            "head": "thigh.L_head",
+            "parent": "hips",
+            "reference": ["pelvis.L","upperleg01.L","upperleg02.L"],
+            "weights_reference": ["upperleg01.L","upperleg02.L"],
+            "roll": 1.9113411903381348,
+            "tail": "thigh.L_tail"
+        },
+        "thigh.R": {
+            "head": "thigh.R_head",
+            "parent": "hips",
+            "reference": ["pelvis.R","upperleg01.R","upperleg02.R"],
+            "weights_reference": ["upperleg01.R","upperleg02.R"],
+            "roll": -1.9113411903381348,
+            "tail": "thigh.R_tail"
+        },
+        "thumb.01.L": {
+            "head": "thumb.01.L_head",
+            "parent": "hand.L",
+            "reference": ["finger1-1.L"],
+            "roll": -0.9263502955436707,
+            "tail": "thumb.01.L_tail"
+        },
+        "thumb.01.R": {
+            "head": "thumb.01.R_head",
+            "parent": "hand.R",
+            "reference": ["finger1-1.R"],
+            "roll": 0.927350640296936,
+            "tail": "thumb.01.R_tail"
+        },
+        "thumb.02.L": {
+            "head": "thumb.02.L_head",
+            "parent": "thumb.01.L",
+            "reference": ["finger1-2.L"],
+            "roll": -0.061334121972322464,
+            "tail": "thumb.02.L_tail"
+        },
+        "thumb.02.R": {
+            "head": "thumb.02.R_head",
+            "parent": "thumb.01.R",
+            "reference": ["finger1-2.R"],
+            "roll": 0.061334121972322464,
+            "tail": "thumb.02.R_tail"
+        },
+        "thumb.03.L": {
+            "head": "thumb.03.L_head",
+            "parent": "thumb.02.L",
+            "reference": ["finger1-3.L"],
+            "roll": -0.08036887645721436,
+            "tail": "thumb.03.L_tail"
+        },
+        "thumb.03.R": {
+            "head": "thumb.03.R_head",
+            "parent": "thumb.02.R",
+            "reference": ["finger1-3.R"],
+            "roll": 0.08036887645721436,
+            "tail": "thumb.03.R_tail"
+        },
+        "toe.L": {
+            "head": "toe.L_head",
+            "parent": "foot.L",
+            "reference": ["toe1-1.L","toe1-2.L"],
+            "weights_reference": ["toe1-1.L","toe1-2.L","toe1-3.L","toe2-1.L","toe2-2.L","toe2-3.L","toe3-1.L","toe3-2.L","toe3-3.L","toe4-1.L","toe4-2.L","toe4-3.L","toe5-1.L","toe5-2.L","toe5-3.L"],
+            "roll": 0.07304878532886505,
+            "tail": "toe.L_tail"
+        },
+        "toe.R": {
+            "head": "toe.R_head",
+            "parent": "foot.R",
+            "reference": ["toe1-1.R","toe1-2.R"],
+            "weights_reference": ["toe1-1.R","toe1-2.R","toe1-3.R","toe2-1.R","toe2-2.R","toe2-3.R","toe3-1.R","toe3-2.R","toe3-3.R","toe4-1.R","toe4-2.R","toe4-3.R","toe5-1.R","toe5-2.R","toe5-3.R"],
+            "roll": -0.07304878532886505,
+            "tail": "toe.R_tail"
+        },
+        "tongue_base": {
+            "head": "tongue_base_head",
+            "parent": "jaw",
+            "reference": ["tongue01"],
+            "roll": -1.1372817709798255e-07,
+            "weights_reference": ["tongue00","tongue01"],
+            "tail": "tongue_base_tail"
+        },
+        "tongue_mod": {
+            "head": "tongue_mod_head",
+            "parent": "tongue_base",
+            "reference": ["tongue02"],
+            "roll": -3.141590118408203,
+            "tail": "tongue_mod_tail"
+        },
+        "tongue_tip": {
+            "head": "tongue_tip_head",
+            "parent": "tongue_mod",
+            "reference": ["tongue03","tongue04"],
+            "roll": -3.141592502593994,
+            "tail": "tongue_tip_tail"
+        },
+        "uplid.L": {
+            "head": "uplid.L_head",
+            "parent": "head",
+            "reference": ["orbicularis03.L"],
+            "roll": 0.045111171901226044,
+            "tail": "uplid.L_tail"
+        },
+        "uplid.R": {
+            "head": "uplid.R_head",
+            "parent": "head",
+            "reference": ["orbicularis03.R"],
+            "roll": -0.045111171901226044,
+            "tail": "uplid.R_tail"
+        },
+        "upper_arm.L": {
+            "head": "upper_arm.L_head",
+            "parent": "shoulder.L",
+            "reference": ["upperarm01.L","upperarm02.L"],
+            "roll": 3.138939619064331,
+            "tail": "upper_arm.L_tail"
+        },
+        "upper_arm.R": {
+            "head": "upper_arm.R_head",
+            "parent": "shoulder.R",
+            "reference": ["upperarm01.R","upperarm02.R"],
+            "roll": -3.138939619064331,
+            "tail": "upper_arm.R_tail"
+        }
+    },
+    "copyright": "(c) Makehuman.org 2014",
+    "description": "Unity compliant skeleton, for straightforward retargeting using Mecanim",
+    "joints": {
+        "chest1_head": [
+            13654,
+            13655,
+            13656,
+            13657,
+            13658,
+            13659,
+            13660,
+            13661
+        ],
+        "chest1_tail": [
+            14534,
+            14535,
+            14536,
+            14537,
+            14538,
+            14539,
+            14540,
+            14541
+        ],
+        "chest_head": [
+            13646,
+            13647,
+            13648,
+            13649,
+            13650,
+            13651,
+            13652,
+            13653
+        ],
+        "chest_tail": [
+            13654,
+            13655,
+            13656,
+            13657,
+            13658,
+            13659,
+            13660,
+            13661
+        ],
+        "eye.L_head": [
+            13606,
+            13607,
+            13608,
+            13609,
+            13610,
+            13611,
+            13612,
+            13613
+        ],
+        "eye.L_tail": [
+            14086,
+            14087,
+            14088,
+            14089,
+            14090,
+            14091,
+            14092,
+            14093
+        ],
+        "eye.R_head": [
+            13614,
+            13615,
+            13616,
+            13617,
+            13618,
+            13619,
+            13620,
+            13621
+        ],
+        "eye.R_tail": [
+            14518,
+            14519,
+            14520,
+            14521,
+            14522,
+            14523,
+            14524,
+            14525
+        ],
+        "f_index.01.L_head": [
+            13974,
+            13975,
+            13976,
+            13977,
+            13978,
+            13979,
+            13980,
+            13981
+        ],
+        "f_index.01.L_tail": [
+            13918,
+            13919,
+            13920,
+            13921,
+            13922,
+            13923,
+            13924,
+            13925
+        ],
+        "f_index.01.R_head": [
+            14414,
+            14415,
+            14416,
+            14417,
+            14418,
+            14419,
+            14420,
+            14421
+        ],
+        "f_index.01.R_tail": [
+            14358,
+            14359,
+            14360,
+            14361,
+            14362,
+            14363,
+            14364,
+            14365
+        ],
+        "f_index.02.L_head": [
+            13918,
+            13919,
+            13920,
+            13921,
+            13922,
+            13923,
+            13924,
+            13925
+        ],
+        "f_index.02.L_tail": [
+            13910,
+            13911,
+            13912,
+            13913,
+            13914,
+            13915,
+            13916,
+            13917
+        ],
+        "f_index.02.R_head": [
+            14358,
+            14359,
+            14360,
+            14361,
+            14362,
+            14363,
+            14364,
+            14365
+        ],
+        "f_index.02.R_tail": [
+            14350,
+            14351,
+            14352,
+            14353,
+            14354,
+            14355,
+            14356,
+            14357
+        ],
+        "f_index.03.L_head": [
+            13910,
+            13911,
+            13912,
+            13913,
+            13914,
+            13915,
+            13916,
+            13917
+        ],
+        "f_index.03.L_tail": [
+            13854,
+            13855,
+            13856,
+            13857,
+            13858,
+            13859,
+            13860,
+            13861
+        ],
+        "f_index.03.R_head": [
+            14350,
+            14351,
+            14352,
+            14353,
+            14354,
+            14355,
+            14356,
+            14357
+        ],
+        "f_index.03.R_tail": [
+            14294,
+            14295,
+            14296,
+            14297,
+            14298,
+            14299,
+            14300,
+            14301
+        ],
+        "f_middle.01.L_head": [
+            13966,
+            13967,
+            13968,
+            13969,
+            13970,
+            13971,
+            13972,
+            13973
+        ],
+        "f_middle.01.L_tail": [
+            13926,
+            13927,
+            13928,
+            13929,
+            13930,
+            13931,
+            13932,
+            13933
+        ],
+        "f_middle.01.R_head": [
+            14406,
+            14407,
+            14408,
+            14409,
+            14410,
+            14411,
+            14412,
+            14413
+        ],
+        "f_middle.01.R_tail": [
+            14366,
+            14367,
+            14368,
+            14369,
+            14370,
+            14371,
+            14372,
+            14373
+        ],
+        "f_middle.02.L_head": [
+            13926,
+            13927,
+            13928,
+            13929,
+            13930,
+            13931,
+            13932,
+            13933
+        ],
+        "f_middle.02.L_tail": [
+            13902,
+            13903,
+            13904,
+            13905,
+            13906,
+            13907,
+            13908,
+            13909
+        ],
+        "f_middle.02.R_head": [
+            14366,
+            14367,
+            14368,
+            14369,
+            14370,
+            14371,
+            14372,
+            14373
+        ],
+        "f_middle.02.R_tail": [
+            14342,
+            14343,
+            14344,
+            14345,
+            14346,
+            14347,
+            14348,
+            14349
+        ],
+        "f_middle.03.L_head": [
+            13902,
+            13903,
+            13904,
+            13905,
+            13906,
+            13907,
+            13908,
+            13909
+        ],
+        "f_middle.03.L_tail": [
+            13862,
+            13863,
+            13864,
+            13865,
+            13866,
+            13867,
+            13868,
+            13869
+        ],
+        "f_middle.03.R_head": [
+            14342,
+            14343,
+            14344,
+            14345,
+            14346,
+            14347,
+            14348,
+            14349
+        ],
+        "f_middle.03.R_tail": [
+            14302,
+            14303,
+            14304,
+            14305,
+            14306,
+            14307,
+            14308,
+            14309
+        ],
+        "f_pinky.01.L_head": [
+            13950,
+            13951,
+            13952,
+            13953,
+            13954,
+            13955,
+            13956,
+            13957
+        ],
+        "f_pinky.01.L_tail": [
+            13942,
+            13943,
+            13944,
+            13945,
+            13946,
+            13947,
+            13948,
+            13949
+        ],
+        "f_pinky.01.R_head": [
+            14390,
+            14391,
+            14392,
+            14393,
+            14394,
+            14395,
+            14396,
+            14397
+        ],
+        "f_pinky.01.R_tail": [
+            14382,
+            14383,
+            14384,
+            14385,
+            14386,
+            14387,
+            14388,
+            14389
+        ],
+        "f_pinky.02.L_head": [
+            13942,
+            13943,
+            13944,
+            13945,
+            13946,
+            13947,
+            13948,
+            13949
+        ],
+        "f_pinky.02.L_tail": [
+            13886,
+            13887,
+            13888,
+            13889,
+            13890,
+            13891,
+            13892,
+            13893
+        ],
+        "f_pinky.02.R_head": [
+            14382,
+            14383,
+            14384,
+            14385,
+            14386,
+            14387,
+            14388,
+            14389
+        ],
+        "f_pinky.02.R_tail": [
+            14326,
+            14327,
+            14328,
+            14329,
+            14330,
+            14331,
+            14332,
+            14333
+        ],
+        "f_pinky.03.L_head": [
+            13886,
+            13887,
+            13888,
+            13889,
+            13890,
+            13891,
+            13892,
+            13893
+        ],
+        "f_pinky.03.L_tail": [
+            13878,
+            13879,
+            13880,
+            13881,
+            13882,
+            13883,
+            13884,
+            13885
+        ],
+        "f_pinky.03.R_head": [
+            14326,
+            14327,
+            14328,
+            14329,
+            14330,
+            14331,
+            14332,
+            14333
+        ],
+        "f_pinky.03.R_tail": [
+            14318,
+            14319,
+            14320,
+            14321,
+            14322,
+            14323,
+            14324,
+            14325
+        ],
+        "f_ring.01.L_head": [
+            13958,
+            13959,
+            13960,
+            13961,
+            13962,
+            13963,
+            13964,
+            13965
+        ],
+        "f_ring.01.L_tail": [
+            13934,
+            13935,
+            13936,
+            13937,
+            13938,
+            13939,
+            13940,
+            13941
+        ],
+        "f_ring.01.R_head": [
+            14398,
+            14399,
+            14400,
+            14401,
+            14402,
+            14403,
+            14404,
+            14405
+        ],
+        "f_ring.01.R_tail": [
+            14374,
+            14375,
+            14376,
+            14377,
+            14378,
+            14379,
+            14380,
+            14381
+        ],
+        "f_ring.02.L_head": [
+            13934,
+            13935,
+            13936,
+            13937,
+            13938,
+            13939,
+            13940,
+            13941
+        ],
+        "f_ring.02.L_tail": [
+            13894,
+            13895,
+            13896,
+            13897,
+            13898,
+            13899,
+            13900,
+            13901
+        ],
+        "f_ring.02.R_head": [
+            14374,
+            14375,
+            14376,
+            14377,
+            14378,
+            14379,
+            14380,
+            14381
+        ],
+        "f_ring.02.R_tail": [
+            14334,
+            14335,
+            14336,
+            14337,
+            14338,
+            14339,
+            14340,
+            14341
+        ],
+        "f_ring.03.L_head": [
+            13894,
+            13895,
+            13896,
+            13897,
+            13898,
+            13899,
+            13900,
+            13901
+        ],
+        "f_ring.03.L_tail": [
+            13870,
+            13871,
+            13872,
+            13873,
+            13874,
+            13875,
+            13876,
+            13877
+        ],
+        "f_ring.03.R_head": [
+            14334,
+            14335,
+            14336,
+            14337,
+            14338,
+            14339,
+            14340,
+            14341
+        ],
+        "f_ring.03.R_tail": [
+            14310,
+            14311,
+            14312,
+            14313,
+            14314,
+            14315,
+            14316,
+            14317
+        ],
+        "foot.L_head": [
+            13830,
+            13831,
+            13832,
+            13833,
+            13834,
+            13835,
+            13836,
+            13837
+        ],
+        "foot.L_tail": [
+            13790,
+            13791,
+            13792,
+            13793,
+            13794,
+            13795,
+            13796,
+            13797
+        ],
+        "foot.R_head": [
+            14270,
+            14271,
+            14272,
+            14273,
+            14274,
+            14275,
+            14276,
+            14277
+        ],
+        "foot.R_tail": [
+            14230,
+            14231,
+            14232,
+            14233,
+            14234,
+            14235,
+            14236,
+            14237
+        ],
+        "forearm.L_head": [
+            14038,
+            14039,
+            14040,
+            14041,
+            14042,
+            14043,
+            14044,
+            14045
+        ],
+        "forearm.L_tail": [
+            14030,
+            14031,
+            14032,
+            14033,
+            14034,
+            14035,
+            14036,
+            14037
+        ],
+        "forearm.R_head": [
+            14478,
+            14479,
+            14480,
+            14481,
+            14482,
+            14483,
+            14484,
+            14485
+        ],
+        "forearm.R_tail": [
+            14470,
+            14471,
+            14472,
+            14473,
+            14474,
+            14475,
+            14476,
+            14477
+        ],
+        "hand.L_head": [
+            14030,
+            14031,
+            14032,
+            14033,
+            14034,
+            14035,
+            14036,
+            14037
+        ],
+        "hand.L_tail": [
+            13966,
+            13967,
+            13968,
+            13969,
+            13970,
+            13971,
+            13972,
+            13973
+        ],
+        "hand.R_head": [
+            14470,
+            14471,
+            14472,
+            14473,
+            14474,
+            14475,
+            14476,
+            14477
+        ],
+        "hand.R_tail": [
+            14406,
+            14407,
+            14408,
+            14409,
+            14410,
+            14411,
+            14412,
+            14413
+        ],
+        "head_head": [
+            14070,
+            14071,
+            14072,
+            14073,
+            14074,
+            14075,
+            14076,
+            14077
+        ],
+        "head_tail": [
+            14566,
+            14567,
+            14568,
+            14569,
+            14570,
+            14571,
+            14572,
+            14573
+        ],
+        "hips_head": [
+            13622,
+            13623,
+            13624,
+            13625,
+            13626,
+            13627,
+            13628,
+            13629
+        ],
+        "hips_tail": [
+            13638,
+            13639,
+            13640,
+            13641,
+            13642,
+            13643,
+            13644,
+            13645
+        ],
+        "jaw_head": [
+            14590,
+            14591,
+            14592,
+            14593,
+            14594,
+            14595,
+            14596,
+            14597
+        ],
+        "jaw_tail": [
+            14542,
+            14543,
+            14544,
+            14545,
+            14546,
+            14547,
+            14548,
+            14549
+        ],
+        "lolid.L_head": [
+            13606,
+            13607,
+            13608,
+            13609,
+            13610,
+            13611,
+            13612,
+            13613
+        ],
+        "lolid.L_tail": [
+            14078,
+            14079,
+            14080,
+            14081,
+            14082,
+            14083,
+            14084,
+            14085
+        ],
+        "lolid.R_head": [
+            13614,
+            13615,
+            13616,
+            13617,
+            13618,
+            13619,
+            13620,
+            13621
+        ],
+        "lolid.R_tail": [
+            14510,
+            14511,
+            14512,
+            14513,
+            14514,
+            14515,
+            14516,
+            14517
+        ],
+        "neck_head": [
+            14534,
+            14535,
+            14536,
+            14537,
+            14538,
+            14539,
+            14540,
+            14541
+        ],
+        "neck_tail": [
+            14070,
+            14071,
+            14072,
+            14073,
+            14074,
+            14075,
+            14076,
+            14077
+        ],
+        "shin.L_head": [
+            13838,
+            13839,
+            13840,
+            13841,
+            13842,
+            13843,
+            13844,
+            13845
+        ],
+        "shin.L_tail": [
+            13830,
+            13831,
+            13832,
+            13833,
+            13834,
+            13835,
+            13836,
+            13837
+        ],
+        "shin.R_head": [
+            14278,
+            14279,
+            14280,
+            14281,
+            14282,
+            14283,
+            14284,
+            14285
+        ],
+        "shin.R_tail": [
+            14270,
+            14271,
+            14272,
+            14273,
+            14274,
+            14275,
+            14276,
+            14277
+        ],
+        "shoulder.L_head": [
+            14054,
+            14055,
+            14056,
+            14057,
+            14058,
+            14059,
+            14060,
+            14061
+        ],
+        "shoulder.L_tail": [
+            14046,
+            14047,
+            14048,
+            14049,
+            14050,
+            14051,
+            14052,
+            14053
+        ],
+        "shoulder.R_head": [
+            14494,
+            14495,
+            14496,
+            14497,
+            14498,
+            14499,
+            14500,
+            14501
+        ],
+        "shoulder.R_tail": [
+            14486,
+            14487,
+            14488,
+            14489,
+            14490,
+            14491,
+            14492,
+            14493
+        ],
+        "spine_head": [
+            13638,
+            13639,
+            13640,
+            13641,
+            13642,
+            13643,
+            13644,
+            13645
+        ],
+        "spine_tail": [
+            13646,
+            13647,
+            13648,
+            13649,
+            13650,
+            13651,
+            13652,
+            13653
+        ],
+        "thigh.L_head": [
+            13846,
+            13847,
+            13848,
+            13849,
+            13850,
+            13851,
+            13852,
+            13853
+        ],
+        "thigh.L_tail": [
+            13838,
+            13839,
+            13840,
+            13841,
+            13842,
+            13843,
+            13844,
+            13845
+        ],
+        "thigh.R_head": [
+            14286,
+            14287,
+            14288,
+            14289,
+            14290,
+            14291,
+            14292,
+            14293
+        ],
+        "thigh.R_tail": [
+            14278,
+            14279,
+            14280,
+            14281,
+            14282,
+            14283,
+            14284,
+            14285
+        ],
+        "thumb.01.L_head": [
+            14006,
+            14007,
+            14008,
+            14009,
+            14010,
+            14011,
+            14012,
+            14013
+        ],
+        "thumb.01.L_tail": [
+            13998,
+            13999,
+            14000,
+            14001,
+            14002,
+            14003,
+            14004,
+            14005
+        ],
+        "thumb.01.R_head": [
+            14446,
+            14447,
+            14448,
+            14449,
+            14450,
+            14451,
+            14452,
+            14453
+        ],
+        "thumb.01.R_tail": [
+            14438,
+            14439,
+            14440,
+            14441,
+            14442,
+            14443,
+            14444,
+            14445
+        ],
+        "thumb.02.L_head": [
+            13998,
+            13999,
+            14000,
+            14001,
+            14002,
+            14003,
+            14004,
+            14005
+        ],
+        "thumb.02.L_tail": [
+            13990,
+            13991,
+            13992,
+            13993,
+            13994,
+            13995,
+            13996,
+            13997
+        ],
+        "thumb.02.R_head": [
+            14438,
+            14439,
+            14440,
+            14441,
+            14442,
+            14443,
+            14444,
+            14445
+        ],
+        "thumb.02.R_tail": [
+            14430,
+            14431,
+            14432,
+            14433,
+            14434,
+            14435,
+            14436,
+            14437
+        ],
+        "thumb.03.L_head": [
+            13990,
+            13991,
+            13992,
+            13993,
+            13994,
+            13995,
+            13996,
+            13997
+        ],
+        "thumb.03.L_tail": [
+            13982,
+            13983,
+            13984,
+            13985,
+            13986,
+            13987,
+            13988,
+            13989
+        ],
+        "thumb.03.R_head": [
+            14430,
+            14431,
+            14432,
+            14433,
+            14434,
+            14435,
+            14436,
+            14437
+        ],
+        "thumb.03.R_tail": [
+            14422,
+            14423,
+            14424,
+            14425,
+            14426,
+            14427,
+            14428,
+            14429
+        ],
+        "toe.L_head": [
+            13790,
+            13791,
+            13792,
+            13793,
+            13794,
+            13795,
+            13796,
+            13797
+        ],
+        "toe.L_tail": [
+            13718,
+            13719,
+            13720,
+            13721,
+            13722,
+            13723,
+            13724,
+            13725
+        ],
+        "toe.R_head": [
+            14230,
+            14231,
+            14232,
+            14233,
+            14234,
+            14235,
+            14236,
+            14237
+        ],
+        "toe.R_tail": [
+            14158,
+            14159,
+            14160,
+            14161,
+            14162,
+            14163,
+            14164,
+            14165
+        ],
+        "tongue_base_head": [
+            14582,
+            14583,
+            14584,
+            14585,
+            14586,
+            14587,
+            14588,
+            14589
+        ],
+        "tongue_base_tail": [
+            14574,
+            14575,
+            14576,
+            14577,
+            14578,
+            14579,
+            14580,
+            14581
+        ],
+        "tongue_mod_head": [
+            14574,
+            14575,
+            14576,
+            14577,
+            14578,
+            14579,
+            14580,
+            14581
+        ],
+        "tongue_mod_tail": [
+            14558,
+            14559,
+            14560,
+            14561,
+            14562,
+            14563,
+            14564,
+            14565
+        ],
+        "tongue_tip_head": [
+            14558,
+            14559,
+            14560,
+            14561,
+            14562,
+            14563,
+            14564,
+            14565
+        ],
+        "tongue_tip_tail": [
+            14550,
+            14551,
+            14552,
+            14553,
+            14554,
+            14555,
+            14556,
+            14557
+        ],
+        "uplid.L_head": [
+            13606,
+            13607,
+            13608,
+            13609,
+            13610,
+            13611,
+            13612,
+            13613
+        ],
+        "uplid.L_tail": [
+            14094,
+            14095,
+            14096,
+            14097,
+            14098,
+            14099,
+            14100,
+            14101
+        ],
+        "uplid.R_head": [
+            13614,
+            13615,
+            13616,
+            13617,
+            13618,
+            13619,
+            13620,
+            13621
+        ],
+        "uplid.R_tail": [
+            14526,
+            14527,
+            14528,
+            14529,
+            14530,
+            14531,
+            14532,
+            14533
+        ],
+        "upper_arm.L_head": [
+            14046,
+            14047,
+            14048,
+            14049,
+            14050,
+            14051,
+            14052,
+            14053
+        ],
+        "upper_arm.L_tail": [
+            14038,
+            14039,
+            14040,
+            14041,
+            14042,
+            14043,
+            14044,
+            14045
+        ],
+        "upper_arm.R_head": [
+            14486,
+            14487,
+            14488,
+            14489,
+            14490,
+            14491,
+            14492,
+            14493
+        ],
+        "upper_arm.R_tail": [
+            14478,
+            14479,
+            14480,
+            14481,
+            14482,
+            14483,
+            14484,
+            14485
+        ]
+    },
+    "license": "GNU Affero General Public License 3",
+    "name": "Unity compliant skeleton",
+    "tags": ["Detailed hands","game"],
+    "version": 102
+}

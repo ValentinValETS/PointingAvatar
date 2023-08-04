@@ -69,7 +69,7 @@ public class ExperimentalTrialsCSVReader : MonoBehaviour
     /// </summary>
     void ReadCSV()
     {
-        TextAsset textAssetData = Resources.Load<TextAsset>("experimental_trials"); // Replace "filename" with the name of your CSV file without the ".csv" extension
+        TextAsset textAssetData = Resources.Load<TextAsset>("Experimental_trials"); // Replace "filename" with the name of your CSV file without the ".csv" extension
 
         string[] data = textAssetData.text.Split(new string[] { ",", "\n" }, StringSplitOptions.None);
 

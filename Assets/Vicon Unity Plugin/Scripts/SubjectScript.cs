@@ -39,8 +39,7 @@ namespace UnityVicon
 
         private void Start()
         {
-           
-
+            Client = GameObject.Find("ViconDataStreamPrefab").GetComponent<ViconDataStreamClient>();
         }
 
         public SubjectScript()
@@ -104,7 +103,7 @@ namespace UnityVicon
         Quaternion Rot = new Quaternion((float)ORot.Rotation[0], (float)ORot.Rotation[1], (float)ORot.Rotation[2], (float)ORot.Rotation[3]);
                 // mapping right hand to left hand flipping x
 
-                if (BoneName == "hips" || BoneName == "thigh.R" || BoneName == "thigh.L" || BoneName == "spine")
+                if (BoneName == "hips" || BoneName == "thigh.R" || BoneName == "thigh.L" || BoneName == "spine" || BoneName == "chest" || BoneName == "chest1")
                 {
                     //DO NOTHING
                 }
@@ -166,7 +165,7 @@ namespace UnityVicon
       {
         //Vector3 Translate = new Vector3(-(float)OTran.Translation[2] * 0.001f, -(float)OTran.Translation[0] * 0.001f, (float)OTran.Translation[1] * 0.001f);
         Vector3 Translate = new Vector3((float)OTran.Translation[0] * 0.001f, (float)OTran.Translation[1] * 0.001f, (float)OTran.Translation[2] * 0.001f);
-                if (BoneName == "hips" || BoneName == "thigh.R" || BoneName == "thigh.L" || BoneName == "spine")
+                if (BoneName == "hips" || BoneName == "thigh.R" || BoneName == "thigh.L" || BoneName == "spine" || BoneName == "chest" || BoneName == "chest1")
                 {
                     //DO NOTHING
                 }

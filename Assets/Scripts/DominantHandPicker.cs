@@ -79,6 +79,26 @@ public class DominantHandPicker : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        GameObject original = GameObject.FindGameObjectWithTag("Original");
+        leftRealHandPosition = original.transform.Find("Unity compliant skeleton/hips/spine/chest/chest1/shoulder.L/upper_arm.L/forearm.L/hand.L").gameObject;
+        leftRealElbowPosition = original.transform.Find("Unity compliant skeleton/hips/spine/chest/chest1/shoulder.L/upper_arm.L/forearm.L").gameObject;
+        leftRealShoulderPosition = original.transform.Find("Unity compliant skeleton/hips/spine/chest/chest1/shoulder.L/upper_arm.L").gameObject;
+
+        rightRealHandPosition = original.transform.Find("Unity compliant skeleton/hips/spine/chest/chest1/shoulder.R/upper_arm.R/forearm.R/hand.R").gameObject;
+        rightRealElbowPosition = original.transform.Find("Unity compliant skeleton/hips/spine/chest/chest1/shoulder.R/upper_arm.R/forearm.R").gameObject;
+        rightRealShoulderPosition = original.transform.Find("Unity compliant skeleton/hips/spine/chest/chest1/shoulder.R/upper_arm.R").gameObject;
+
+        GameObject avatar = GameObject.FindGameObjectWithTag("Avatar");
+        leftVirtualHandPosition = avatar.transform.Find("Unity compliant skeleton/hips/spine/chest/chest1/shoulder.L/upper_arm.L/forearm.L/hand.L").gameObject;
+        leftVirtualElbowPosition = avatar.transform.Find("Unity compliant skeleton/hips/spine/chest/chest1/shoulder.L/upper_arm.L/forearm.L").gameObject;
+        leftVirtualShoulderPosition = avatar.transform.Find("Unity compliant skeleton/hips/spine/chest/chest1/shoulder.L/upper_arm.L").gameObject;
+
+        rightVirtualHandPosition = avatar.transform.Find("Unity compliant skeleton/hips/spine/chest/chest1/shoulder.R/upper_arm.R/forearm.R/hand.R").gameObject;
+        rightVirtualElbowPosition = avatar.transform.Find("Unity compliant skeleton/hips/spine/chest/chest1/shoulder.R/upper_arm.R/forearm.R").gameObject;
+        rightVirtualShoulderPosition = avatar.transform.Find("Unity compliant skeleton/hips/spine/chest/chest1/shoulder.R/upper_arm.R").gameObject;
+
+
+
         if (TargetsCoordinatesCSVReader.Instance is not null)
             dominantHand = TargetsCoordinatesCSVReader.Instance.coordinatesList.coordinates[0].dominantHand == 1 ? EDominantHand.Right : EDominantHand.Left;
 

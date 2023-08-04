@@ -1,11 +1,11 @@
-﻿Arm Position,Body Part,x,z,Dominant Hand
-pointR,elbow,-0.29,0,-1
-pointR,hand,-0.29,0.37,-1
-pointPP,elbow,-0.251147367,0.145,-1
-pointPP,hand,-0.066147367,0.465429399,-1
-pointMM,elbow,-0.251147367,-0.145,-1
-pointMM,hand,-0.436147367,0.175429399,-1
-pointPM,elbow,-0.251147367,0.145,-1
-pointPM,hand,-0.436147367,0.465429399,-1
-pointMP,elbow,-0.251147367,-0.145,-1
-pointMP,hand,-0.066147367,0.175429399,-1
+Arm Position,Body Part,x,z,Dominant Hand
+pointR,elbow,0.227888,0.271586342,1
+pointR,hand,0.035051717,0.501399675,1
+pointPP,elbow,0.061563626,0.349144672,1
+pointPP,hand,-0.22034416,0.451750715,1
+pointMM,elbow,0.333149968,0.121256672,1
+pointMM,hand,0.281055515,0.416698998,1
+pointPM,elbow,0.061563626,0.349144672,1
+pointPM,hand,0.009469172,0.644586998,1
+pointMP,elbow,0.333149968,0.121256672,1
+pointMP,hand,0.051242182,0.223862715,1

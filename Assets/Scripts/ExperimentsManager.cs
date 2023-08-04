@@ -135,7 +135,7 @@ public class ExperimentsManager : MonoBehaviour
     //public RotationOffsetOptions rotationOffsetOptions;
     public FactorOffsetOptions factorOffsetOptions;
 
-    public VRRigParent VRArmRig;
+    //public VRRigParent VRArmRig;
 
     public TextMeshProUGUI delayText;
     public Chronometer chronometer;
@@ -171,8 +171,27 @@ public class ExperimentsManager : MonoBehaviour
 
     public SubjectScript viconData;
     public TargetCalibration targetCalib;
-    private float startedShoulderAngle;
-    private float startedElbowAngle;
+
+    // TODO: Temporary, should be in another class handling UI inputs
+    public UnityEngine.UI.Button button_startExperiment;
+
+    private Quaternion startedShoulderAngle;
+    private Quaternion startedElbowAngle;
+
+    private Quaternion startElbowRotation;
+    private Quaternion startShoulderRotation;
+    private Vector3 startElbowPosition;
+    private Vector3 startShoulderPosition;
+    private Vector3 segment_upperArm_start;
+    private Vector3 segment_upperArm_end;
+    private float shoulderToAngle;
+    private Quaternion endShoulderRotation;
+
+    private Vector3 segment_arm_start;
+    private Vector3 segment_arm_end;
+    private float elbowToAngle;
+    private Quaternion endElbowRotation;
+    private bool isInitiated;
 
 
     void Awake()
@@ -185,12 +204,47 @@ public class ExperimentsManager : MonoBehaviour
         {
             Instance = this;
         }
+
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        if(ExperimentalTrialsCSVReader.Instance is not null && ExperimentalTrialsCSVReader.Instance.experimentalTrialList.experimentalTrials.Length > 0)
+        // TODO: Temporary, should be in another class handling UI inputs
+        if (button_startExperiment is not null)
+            button_startExperiment.onClick.AddListener(ButtonClicked);
+
+        if (GameObject.FindGameObjectWithTag("Avatar"))
+        {
+            GameObject avatar = GameObject.FindGameObjectWithTag("Avatar");
+
+            viconData = avatar.GetComponent<SubjectScript>();
+
+            GameObject foreArmR = avatar.transform.Find("Unity compliant skeleton/hips/spine/chest/chest1/shoulder.R/upper_arm.R/forearm.R").gameObject;
+            foreArmR.GetComponent<ArmIK>().solver.SetChain(avatar.transform.Find("Unity compliant skeleton/hips/spine/chest/chest1").transform, avatar.transform.Find("Unity compliant skeleton/hips/spine/chest/chest1/shoulder.R").transform, avatar.transform.Find("Unity compliant skeleton/hips/spine/chest/chest1/shoulder.R/upper_arm.R").transform, avatar.transform.Find("Unity compliant skeleton/hips/spine/chest/chest1/shoulder.R/upper_arm.R/forearm.R").transform, avatar.transform.Find("Unity compliant skeleton/hips/spine/chest/chest1/shoulder.R/upper_arm.R/forearm.R/hand.R").transform, avatar.transform.Find("Unity compliant skeleton/hips/spine/chest/chest1").transform);                
+            //foreArmR.GetComponent<ArmIK>().solver.IKPosition = GameObject.FindGameObjectWithTag("HandIKTargetR").transform.position;
+            foreArmR.GetComponent<ArmIK>().solver.arm.target = GameObject.FindGameObjectWithTag("HandTargetIK.R").transform;
+            foreArmR.GetComponent<ArmIK>().solver.arm.bendGoal = GameObject.FindGameObjectWithTag("ElbowTargetIK.R").transform;
+            foreArmR.GetComponent<ArmIK>().solver.IKRotationWeight = 0f;
+
+            if(DominantHandPicker.Instance.dominantHand == EDominantHand.Left)
+                foreArmR.GetComponent<ArmIK>().enabled = false;
+
+            GameObject foreArmL = avatar.transform.Find("Unity compliant skeleton/hips/spine/chest/chest1/shoulder.L/upper_arm.L/forearm.L").gameObject;
+            foreArmL.GetComponent<ArmIK>().solver.SetChain(avatar.transform.Find("Unity compliant skeleton/hips/spine/chest/chest1").transform, avatar.transform.Find("Unity compliant skeleton/hips/spine/chest/chest1/shoulder.L").transform, avatar.transform.Find("Unity compliant skeleton/hips/spine/chest/chest1/shoulder.L/upper_arm.L").transform, avatar.transform.Find("Unity compliant skeleton/hips/spine/chest/chest1/shoulder.L/upper_arm.L/forearm.L").transform, avatar.transform.Find("Unity compliant skeleton/hips/spine/chest/chest1/shoulder.L/upper_arm.L/forearm.L/hand.L").transform, avatar.transform.Find("Unity compliant skeleton/hips/spine/chest/chest1").transform);
+            //foreArmL.GetComponent<ArmIK>().solver.IKPosition = GameObject.FindGameObjectWithTag("HandIKTargetL").transform.position;
+            foreArmL.GetComponent<ArmIK>().solver.isLeft = true;
+            foreArmL.GetComponent<ArmIK>().solver.IKRotationWeight = 0f;
+            foreArmL.GetComponent<ArmIK>().solver.arm.target = GameObject.FindGameObjectWithTag("HandTargetIK.L").transform;
+            foreArmL.GetComponent<ArmIK>().solver.arm.bendGoal = GameObject.FindGameObjectWithTag("ElbowTargetIK.L").transform;
+
+            if (DominantHandPicker.Instance.dominantHand == EDominantHand.Right)
+                foreArmL.GetComponent<ArmIK>().enabled = false;
+            
+        }
+
+
+        if (ExperimentalTrialsCSVReader.Instance is not null && ExperimentalTrialsCSVReader.Instance.experimentalTrialList.experimentalTrials.Length > 0)
         {
             setExperimentalTrials();
         }
@@ -211,6 +265,16 @@ public class ExperimentsManager : MonoBehaviour
             Debug.LogError("DominantHandPicker is null in ExperimentManager.cs!");
         }
 
+    }
+
+    public void startExperiment()
+    {
+        if(!isDoingExperienceTrial)
+        {
+            // Set up a new experimental trial and flag as currently doing an experimental trial
+            SetNewExperimentalTrial(0);
+            isDoingExperienceTrial = true;
+        }
     }
 
     // Main gameplay loop
@@ -239,9 +303,15 @@ public class ExperimentsManager : MonoBehaviour
             // Hide countdown text when delay time is up
             delayText.gameObject.SetActive(false);
 
+            // TODO: Dont put this here, test only:
+            SetScreenColor(selectedExperimentTrial.showBlackScreen);
+
             // Trial has started, we set the targets for visual help
             if (selectedExperimentTrial.targetsHandPattern is not null)
                 selectTargetsPositions(selectedExperimentTrial.targetsHandPattern);
+            else
+                DisableTargetsHand();
+
         }
 
         if (IsNextRepetitionNextFrame())
@@ -328,6 +398,7 @@ public class ExperimentsManager : MonoBehaviour
                 delayStay: experimentalTrial.DelayStay,
                 delayGoBack: experimentalTrial.DelayGoBack,
                 showChronometer: experimentalTrial.ShowChronometer,
+                showBlackScreen: experimentalTrial.ShowBlackScreen,
                 isAvatarHumanControlled: experimentalTrial.IsAvatarHumanControlled,
                 elbowAngleOffset: experimentalTrial.ElbowAngleOffset,
                 shoulderAngleOffset: experimentalTrial.ShoulderAngleOffset,
@@ -378,7 +449,7 @@ public class ExperimentsManager : MonoBehaviour
     void selectTargetsPositions(Pattern<ETargetHand> pattern)
     {
         DisableTargetsHand();
-        DisableTargetsElbow();
+        DisableTargetElbow(0);
         ETargetHand selectedTargetHand = pattern.FIFO();
         SelectTargetHand(selectedTargetHand);
         ETargetElbow selectedTargetElbow;
@@ -408,128 +479,26 @@ public class ExperimentsManager : MonoBehaviour
 
     }
 
-    
+
 
     /// <summary>
     /// IK MODE: Moves the avatar's wrist and elbow to the positions defined by the start and end vectors for a specified amount of time
     /// </summary>
-    void MoveAvatarCinematicMode(GameObject handIK, GameObject elbowIK, Vector3 startHand, Vector3 startElbow, Vector3 endHand, Vector3 endElbow)
-    {
-        
-        switch (currentMoveAvatarPhase)
-        {
-            case 1:
- 
-
-                currentMoveAvatarPhase++;
-                break;
-            case 2:
-                timerMoveAvatar += Time.deltaTime;
-                handIK.transform.position = Vector3.Lerp(startHand, endHand, timerMoveAvatar / selectedExperimentTrial.delayGo);
-                elbowIK.transform.position = Vector3.Lerp(startElbow, endElbow, timerMoveAvatar / selectedExperimentTrial.delayGo);
-
-
-
-
-                if (timerMoveAvatar >= selectedExperimentTrial.delayGo)
-                {
-                    timerMoveAvatar = 0;
-                    currentMoveAvatarPhase++;
-                }
-                break;
-            case 3:
-                timerMoveAvatar += Time.deltaTime;
-
-                if (timerMoveAvatar >= selectedExperimentTrial.delayStay)
-                {
-                    timerMoveAvatar = 0;
-                    currentMoveAvatarPhase++;
-                }
-                break;
-            case 4:
-                timerMoveAvatar += Time.deltaTime;
-                handIK.transform.position = Vector3.Lerp(endHand, startHand, timerMoveAvatar / selectedExperimentTrial.delayGoBack);
-                elbowIK.transform.position = Vector3.Lerp(endElbow, startElbow, timerMoveAvatar / selectedExperimentTrial.delayGoBack);
-
-   
-
-                if (timerMoveAvatar >= selectedExperimentTrial.delayGoBack)
-                {
-                    timerMoveAvatar = 0;
-                    currentMoveAvatarPhase = 1;
-                }
-                break;
-        }
-    }
-
     //void MoveAvatarCinematicMode(GameObject handIK, GameObject elbowIK, Vector3 startHand, Vector3 startElbow, Vector3 endHand, Vector3 endElbow)
     //{
 
     //    switch (currentMoveAvatarPhase)
     //    {
     //        case 1:
-    //            Vector3 segment_upperArm_actual = DominantHandPicker.Instance.VirtualShoulderPosition.transform.position - DominantHandPicker.Instance.VirtualElbowPosition.transform.position;
-    //            Vector3 segment_upperArm_desired = DominantHandPicker.Instance.VirtualShoulderPosition.transform.position - startElbow;
-    //            float beginShoulderAngle = Mathf.Abs(Vector3.Angle(segment_upperArm_actual, segment_upperArm_desired));
-    //            DominantHandPicker.Instance.VirtualShoulderPosition.transform.Rotate(-beginShoulderAngle, 0, 0);
-    //            //startedShoulderAngle = DominantHandPicker.Instance.VirtualShoulderPosition.transform.rotation.x;
-    //            segment_upperArm_actual = DominantHandPicker.Instance.VirtualShoulderPosition.transform.position - DominantHandPicker.Instance.VirtualElbowPosition.transform.position;
-    //            segment_upperArm_desired = DominantHandPicker.Instance.VirtualShoulderPosition.transform.position - endElbow;
-    //            startedShoulderAngle = Mathf.Abs(Vector3.Angle(segment_upperArm_actual, segment_upperArm_desired));
 
-    //            Vector3 segment_Arm_actual = DominantHandPicker.Instance.VirtualElbowPosition.transform.position - DominantHandPicker.Instance.VirtualHandPosition.transform.position;
-    //            Vector3 segment_Arm_desired = DominantHandPicker.Instance.VirtualElbowPosition.transform.position - startHand;
-    //            float beginElbowAngle = Mathf.Abs(Vector3.Angle(segment_Arm_actual, segment_Arm_desired));
-    //            DominantHandPicker.Instance.VirtualElbowPosition.transform.Rotate(+beginElbowAngle, 0, 0);
-    //            //startedElbowAngle = DominantHandPicker.Instance.VirtualElbowPosition.transform.rotation.x;
-    //            segment_Arm_actual = DominantHandPicker.Instance.VirtualElbowPosition.transform.position - DominantHandPicker.Instance.VirtualHandPosition.transform.position;
-    //            segment_Arm_desired = DominantHandPicker.Instance.VirtualElbowPosition.transform.position - endHand;
-    //            startedElbowAngle = Mathf.Abs(Vector3.Angle(segment_Arm_actual, segment_Arm_desired));
-
-    //            Debug.DrawLine(DominantHandPicker.Instance.VirtualShoulderPosition.transform.forward, startElbow, Color.yellow, 4f);
-
-    //            //DominantHandPicker.Instance.VirtualShoulderPosition.transform.LookAt(startElbow);
-    //            // DominantHandPicker.Instance.VirtualElbowPosition.transform.LookAt(startHand);
-
-    //            //Debug.DrawLine(DominantHandPicker.Instance.VirtualShoulderPosition.transform.position, DominantHandPicker.Instance.VirtualElbowPosition.transform.position, Color.red, 2.5f);
-
-
-    //            Debug.DrawLine(DominantHandPicker.Instance.VirtualElbowPosition.transform.position, DominantHandPicker.Instance.VirtualHandPosition.transform.position, Color.red, 2.5f);
-    //            Debug.DrawLine(DominantHandPicker.Instance.VirtualElbowPosition.transform.position, startHand, Color.yellow, 4f);
 
     //            currentMoveAvatarPhase++;
     //            break;
     //        case 2:
     //            timerMoveAvatar += Time.deltaTime;
-    //            //handIK.transform.position = Vector3.Lerp(startHand, endHand, timerMoveAvatar / selectedExperimentTrial.delayGo);
-    //            //elbowIK.transform.position = Vector3.Lerp(startElbow, endElbow, timerMoveAvatar / selectedExperimentTrial.delayGo);
+    //            handIK.transform.position = Vector3.Lerp(startHand, endHand, timerMoveAvatar / selectedExperimentTrial.delayGo);
+    //            elbowIK.transform.position = Vector3.Lerp(startElbow, endElbow, timerMoveAvatar / selectedExperimentTrial.delayGo);
 
-    //            //Faire un Lerp de angle X jusqu'à ce Vector3.Angle=0;
-    //            //Calcul angle entre segments upper_real et upper_desired
-    //            segment_upperArm_actual = DominantHandPicker.Instance.VirtualShoulderPosition.transform.position - DominantHandPicker.Instance.VirtualElbowPosition.transform.position;
-    //            segment_upperArm_desired = DominantHandPicker.Instance.VirtualShoulderPosition.transform.position - endElbow;
-    //            float currentAngle = Vector3.Angle(segment_upperArm_actual, segment_upperArm_desired);
-
-    //            // Calculate the target angle (0 degrees)
-    //            float targetAngle = 0f;
-    //            // Interpolate between the starting and target angles using Lerp
-    //            float angle = Mathf.Lerp(startedShoulderAngle, targetAngle, timerMoveAvatar / selectedExperimentTrial.delayGo);
-    //            // Rotate the transform around the common point
-    //            DominantHandPicker.Instance.VirtualShoulderPosition.transform.RotateAround(DominantHandPicker.Instance.VirtualShoulderPosition.transform.position, Vector3.up, angle - currentAngle);
-    //            DominantHandPicker.Instance.VirtualShoulderPosition.transform.Rotate(-(angle - currentAngle), 0, 0);
-    //            //DominantHandPicker.Instance.VirtualShoulderPosition.transform.LookAt(endElbow);
-
-
-    //            //Calcul angle entre segments upper_real et upper_desired
-    //            segment_Arm_actual = DominantHandPicker.Instance.VirtualElbowPosition.transform.position - DominantHandPicker.Instance.VirtualHandPosition.transform.position;
-    //            segment_Arm_desired = DominantHandPicker.Instance.VirtualElbowPosition.transform.position - endHand;
-    //            currentAngle = Vector3.Angle(segment_Arm_actual, segment_Arm_desired);
-    //            // Interpolate between the starting and target angles using Lerp
-    //            angle = Mathf.Lerp(startedElbowAngle, targetAngle, timerMoveAvatar / selectedExperimentTrial.delayGo);
-    //            // Rotate the transform around the common point
-    //            DominantHandPicker.Instance.VirtualElbowPosition.transform.RotateAround(DominantHandPicker.Instance.VirtualElbowPosition.transform.position, Vector3.up, angle - currentAngle);
-    //            DominantHandPicker.Instance.VirtualElbowPosition.transform.Rotate(-(angle - currentAngle), 0, 0);
-    //            //DominantHandPicker.Instance.VirtualShoulderPosition.transform.LookAt(endHand);
 
 
 
@@ -553,28 +522,7 @@ public class ExperimentsManager : MonoBehaviour
     //            handIK.transform.position = Vector3.Lerp(endHand, startHand, timerMoveAvatar / selectedExperimentTrial.delayGoBack);
     //            elbowIK.transform.position = Vector3.Lerp(endElbow, startElbow, timerMoveAvatar / selectedExperimentTrial.delayGoBack);
 
-    //            segment_upperArm_actual = DominantHandPicker.Instance.VirtualShoulderPosition.transform.position - DominantHandPicker.Instance.VirtualElbowPosition.transform.position;
-    //            segment_upperArm_desired = DominantHandPicker.Instance.VirtualShoulderPosition.transform.position - endElbow;
-    //            currentAngle = Vector3.Angle(segment_upperArm_actual, segment_upperArm_desired);
 
-    //            // Calculate the target angle (0 degrees)
-    //            targetAngle = 0f;
-    //            // Interpolate between the starting and target angles using Lerp
-    //            angle = Mathf.Lerp(targetAngle, startedShoulderAngle, timerMoveAvatar / selectedExperimentTrial.delayGo);
-    //            // Rotate the transform around the common point
-    //            //DominantHandPicker.Instance.VirtualShoulderPosition.transform.RotateAround(DominantHandPicker.Instance.VirtualShoulderPosition.transform.position, Vector3.up, angle - currentAngle);
-    //            DominantHandPicker.Instance.VirtualShoulderPosition.transform.Rotate(-(angle - currentAngle), 0, 0);
-
-
-    //            //Calcul angle entre segments upper_real et upper_desired
-    //            segment_Arm_actual = DominantHandPicker.Instance.VirtualElbowPosition.transform.position - DominantHandPicker.Instance.VirtualHandPosition.transform.position;
-    //            segment_Arm_desired = DominantHandPicker.Instance.VirtualElbowPosition.transform.position - endHand;
-    //            currentAngle = Vector3.Angle(segment_Arm_actual, segment_Arm_desired);
-    //            // Interpolate between the starting and target angles using Lerp
-    //            angle = Mathf.Lerp(targetAngle, startedElbowAngle, timerMoveAvatar / selectedExperimentTrial.delayGo);
-    //            // Rotate the transform around the common point
-    //            //DominantHandPicker.Instance.VirtualElbowPosition.transform.RotateAround(DominantHandPicker.Instance.VirtualElbowPosition.transform.position, Vector3.up, angle - currentAngle);
-    //            DominantHandPicker.Instance.VirtualElbowPosition.transform.Rotate(-(angle - currentAngle), 0, 0);
 
     //            if (timerMoveAvatar >= selectedExperimentTrial.delayGoBack)
     //            {
@@ -584,6 +532,140 @@ public class ExperimentsManager : MonoBehaviour
     //            break;
     //    }
     //}
+
+    void MoveAvatar2Bones(GameObject virtualWrist, GameObject virtualElbow, Vector3 startHand, Vector3 startElbow, Vector3 endHand, Vector3 endElbow)
+    {
+        switch (currentMoveAvatarPhase)
+        {
+            case 1:
+                timerMoveAvatar += Time.deltaTime;
+                virtualWrist.transform.position = Vector3.Lerp(startHand, endHand, timerMoveAvatar / selectedExperimentTrial.delayGo);
+                virtualElbow.transform.position = Vector3.Lerp(startElbow, endElbow, timerMoveAvatar / selectedExperimentTrial.delayGo);
+
+                if (timerMoveAvatar >= selectedExperimentTrial.delayGo)
+                {
+                    timerMoveAvatar = 0;
+                    currentMoveAvatarPhase++;
+                }
+                break;
+            case 2:
+                timerMoveAvatar += Time.deltaTime;
+
+                if (timerMoveAvatar >= selectedExperimentTrial.delayStay)
+                {
+                    timerMoveAvatar = 0;
+                    currentMoveAvatarPhase++;
+                }
+                break;
+            case 3:
+                timerMoveAvatar += Time.deltaTime;
+                virtualWrist.transform.position = Vector3.Lerp(endHand, startHand, timerMoveAvatar / selectedExperimentTrial.delayGoBack);
+                virtualElbow.transform.position = Vector3.Lerp(endElbow, startElbow, timerMoveAvatar / selectedExperimentTrial.delayGoBack);
+
+                if (timerMoveAvatar >= selectedExperimentTrial.delayGoBack)
+                {
+                    timerMoveAvatar = 0;
+                    currentMoveAvatarPhase = 1;
+                }
+                break;
+        }
+    }
+
+    void MoveAvatarCinematicMode(GameObject handIK, GameObject elbowIK, Vector3 startHand, Vector3 startElbow, Vector3 endHand, Vector3 endElbow)
+    {
+
+        switch (currentMoveAvatarPhase)
+        {
+            case 1:
+                if(!isInitiated)
+                {
+                    Vector3 segment_upperArm_actual = DominantHandPicker.Instance.VirtualShoulderPosition.transform.position - DominantHandPicker.Instance.VirtualElbowPosition.transform.position;
+                    Vector3 segment_upperArm_desired = DominantHandPicker.Instance.VirtualShoulderPosition.transform.position - startElbow;
+                    Quaternion beginShoulderAngle = DominantHandPicker.Instance.VirtualShoulderPosition.transform.rotation;
+                    shoulderToAngle = Vector3.SignedAngle(segment_upperArm_desired, segment_upperArm_actual, Vector3.up);
+                    DominantHandPicker.Instance.VirtualShoulderPosition.transform.rotation = beginShoulderAngle * Quaternion.Euler(shoulderToAngle, 0, 0);
+
+                    Vector3 segment_arm_actual = DominantHandPicker.Instance.VirtualElbowPosition.transform.position - DominantHandPicker.Instance.VirtualHandPosition.transform.position;
+                    Vector3 segment_arm_desired = DominantHandPicker.Instance.VirtualElbowPosition.transform.position - startHand;
+                    Quaternion beginElbowAngle = DominantHandPicker.Instance.VirtualElbowPosition.transform.rotation;
+                    elbowToAngle = Vector3.SignedAngle(segment_arm_desired, segment_arm_actual, Vector3.up);
+                    if (DominantHandPicker.Instance.dominantHand == EDominantHand.Left)
+                    {
+                        elbowToAngle = -elbowToAngle;
+                    }
+                    DominantHandPicker.Instance.VirtualElbowPosition.transform.rotation = beginElbowAngle * Quaternion.Euler(elbowToAngle, 0, 0);
+
+                    startElbowRotation = DominantHandPicker.Instance.VirtualElbowPosition.transform.rotation;
+                    startShoulderRotation = DominantHandPicker.Instance.VirtualShoulderPosition.transform.rotation;
+                    startElbowPosition = DominantHandPicker.Instance.VirtualElbowPosition.transform.position;
+                    startShoulderPosition = DominantHandPicker.Instance.VirtualShoulderPosition.transform.position;
+
+                    isInitiated = true;
+                }
+                
+                Debug.DrawLine(startElbowPosition, DominantHandPicker.Instance.VirtualHandPosition.transform.position, Color.red, 6f);
+                Debug.DrawLine(endElbow, endHand, Color.yellow, 6f);
+                Debug.DrawLine(startShoulderPosition, startElbowPosition, Color.red, 6f);
+                Debug.DrawLine(startShoulderPosition, endElbow, Color.yellow, 6f);
+
+                segment_upperArm_start = startShoulderPosition - startElbowPosition;
+                segment_upperArm_end = startShoulderPosition - endElbow;
+                shoulderToAngle = Vector3.SignedAngle(segment_upperArm_end, segment_upperArm_start, Vector3.up);
+                if (DominantHandPicker.Instance.dominantHand == EDominantHand.Left)
+                {
+                    shoulderToAngle = -shoulderToAngle;
+                }
+                endShoulderRotation = startShoulderRotation * Quaternion.Euler(shoulderToAngle, 0, 0);
+
+                segment_arm_start = startElbowPosition - startHand;
+                segment_arm_end = endElbow - endHand;
+                elbowToAngle = Vector3.SignedAngle(segment_arm_end, segment_arm_start, Vector3.up);
+                if (DominantHandPicker.Instance.dominantHand == EDominantHand.Left)
+                {
+                    elbowToAngle = -elbowToAngle;
+                }
+                endElbowRotation = startElbowRotation * Quaternion.Euler(elbowToAngle, 0, 0);
+
+                Debug.Log("shoulderToAngle=" + shoulderToAngle+ ", elbowToAngle=" + elbowToAngle);
+
+                currentMoveAvatarPhase++;
+                break;
+            case 2:
+                timerMoveAvatar += Time.deltaTime;
+
+                DominantHandPicker.Instance.VirtualShoulderPosition.transform.rotation = Quaternion.Slerp(startShoulderRotation, endShoulderRotation, timerMoveAvatar / selectedExperimentTrial.delayGo);
+                DominantHandPicker.Instance.VirtualElbowPosition.transform.rotation = Quaternion.Slerp(startElbowRotation, endElbowRotation, timerMoveAvatar / selectedExperimentTrial.delayGo);
+                
+
+                if (timerMoveAvatar >= selectedExperimentTrial.delayGo)
+                {
+                    timerMoveAvatar = 0;
+                    currentMoveAvatarPhase++;
+                }
+                break;
+            case 3:                
+                timerMoveAvatar += Time.deltaTime;
+
+                if (timerMoveAvatar >= selectedExperimentTrial.delayStay)
+                {
+                    timerMoveAvatar = 0;
+                    currentMoveAvatarPhase++;
+                }
+                break;
+            case 4:
+                timerMoveAvatar += Time.deltaTime;
+
+                DominantHandPicker.Instance.VirtualShoulderPosition.transform.rotation = Quaternion.Slerp(endShoulderRotation, startShoulderRotation, timerMoveAvatar / selectedExperimentTrial.delayGoBack);
+                DominantHandPicker.Instance.VirtualElbowPosition.transform.rotation = Quaternion.Slerp(endElbowRotation, startElbowRotation, timerMoveAvatar / selectedExperimentTrial.delayGoBack);               
+
+                if (timerMoveAvatar >= selectedExperimentTrial.delayGoBack)
+                {
+                    timerMoveAvatar = 0;
+                    currentMoveAvatarPhase = 1;
+                }
+                break;
+        }
+    }
 
     /// <summary>
     /// Executes a pattern of targets for the hand and elbow according to the provided pattern object.
@@ -646,7 +728,10 @@ public class ExperimentsManager : MonoBehaviour
             case 3:
                 timerChronometer += Time.deltaTime;
 
-                if(timerChronometer >= selectedExperimentTrial.delayGoBack)
+                //TODO, Dont put this here, test only
+                SetScreenColor(false);
+
+                if (timerChronometer >= selectedExperimentTrial.delayGoBack)
                 {
                     timerChronometer = 0;
                     currentChronometerPhase = 1;
@@ -685,6 +770,19 @@ public class ExperimentsManager : MonoBehaviour
     }
 
     /// <summary>
+    /// Enable all targets for the hand except for the rested position.
+    /// </summary>
+    void EnableTargetsHand()
+    {
+        foreach (Transform target in TargetsHand.transform)
+        {
+            // We skip the rested position
+            if (target != TargetsHand.transform.GetChild(0))
+                target.gameObject.SetActive(true);
+        }
+    }
+
+    /// <summary>
     /// Disables all targets for the hand except for the rested position.
     /// </summary>
     void DisableTargetsHand()
@@ -695,6 +793,16 @@ public class ExperimentsManager : MonoBehaviour
             if (target != TargetsHand.transform.GetChild(0))
                 target.gameObject.SetActive(false);
         }
+    }
+
+    void EnableTargetElbow(int index)
+    {
+        TargetsElbow.transform.GetChild(index).gameObject.SetActive(true);
+    }
+
+    void DisableTargetElbow(int index)
+    {
+        TargetsElbow.transform.GetChild(index).gameObject.SetActive(false);
     }
 
     /// <summary>
@@ -729,7 +837,7 @@ public class ExperimentsManager : MonoBehaviour
     void SelectTargetElbow(ETargetElbow elbow)
     {
         selectedTargetElbow = TargetsElbow.transform.Find(elbow.ToString());
-        //rotationOffsetOptions.currentTargetElbowSelected = selectedTargetElbow.gameObject;
+        //rotationOffsetOptions.currentTargetElbowSelected = selectedTargetElbow.gameObject;     
         selectedTargetElbow.gameObject.SetActive(true);
     }
 
@@ -740,39 +848,21 @@ public class ExperimentsManager : MonoBehaviour
     void SetScreenColor(bool isBlind)
     {
         if(isBlind)
-            SteamVR_Fade.View(Color.black, 1);
+            SteamVR_Fade.View(Color.black, 0.1f);
         else
-            SteamVR_Fade.View(Color.clear, 1);
+            SteamVR_Fade.View(Color.clear, 0.1f);
     }
 
     /// <summary>
-    /// Set the Avatar's inverse kinematics (IK) based on whether the Avatar is human-controlled or not.
+    /// Set the Avatar's inverse kinematics (IK) based on whether the Avatar is human-controlled or not. If it is controlled by human, we have to set the factor on the bone, else
+    /// if mode is cinematic, no factors on the bone.
     /// </summary>
     /// <param name="isAvatarHumanControlled">A boolean flag indicating whether the Avatar is human-controlled or not.</param>
     void SetAvatarIK(bool isAvatarHumanControlled)
     {
-        if (!isAvatarHumanControlled)
-        {
-            viconData.enabled = false;
-            //DominantHandPicker.Instance.VirtualElbowPosition.GetComponent<ArmIK>().enabled = false;
-            factorOffsetOptions.gameObject.SetActive(false);
-            DominantHandPicker.Instance.VirtualElbowPosition.GetComponent<ArmIK>().enabled = true;
-
-            //DominantHandPicker.Instance.VirtualHandPosition.transform.parent.GetComponent<FastIKFabric>().enabled = false;
-            //DominantHandPicker.Instance.VirtualHandPosition.GetComponent<FastIKFabric>().ChainLength = 2;
-        }
-        else
-        {
-            viconData.enabled = true;
-            factorOffsetOptions.gameObject.SetActive(true);
-            DominantHandPicker.Instance.VirtualElbowPosition.GetComponent<ArmIK>().enabled = false;
-            //DominantHandPicker.Instance.VirtualHandPosition.GetComponent<FastIKFabric>().ChainLength = 1;
-            //DominantHandPicker.Instance.VirtualHandPosition.GetComponent<FastIKFabric>().enabled = false;
-            //DominantHandPicker.Instance.VirtualHandPosition.transform.parent.GetComponent<FastIKFabric>().enabled = true;
-            //DominantHandPicker.Instance.VirtualHandPosition.GetComponent<FastIKFabric>().enabled = true;
-
-
-        }
+        viconData.enabled = isAvatarHumanControlled;
+        DominantHandPicker.Instance.VirtualElbowPosition.GetComponent<ArmIK>().enabled = isAvatarHumanControlled;
+        factorOffsetOptions.gameObject.SetActive(isAvatarHumanControlled);
     }
 
     void SetOffset(EOffset offset)
@@ -784,9 +874,6 @@ public class ExperimentsManager : MonoBehaviour
     {
         wrist.transform.position = Vector3.Lerp(start, end, lerpValue);
     }
-
-
-
 
 
     /// <summary>
@@ -808,7 +895,7 @@ public class ExperimentsManager : MonoBehaviour
         //VRArmRig.enabled = selectedExperimentTrial.isAvatarHumanControlled;
 
         factorOffsetOptions.factor = selectedExperimentTrial.factor;
-        SetScreenColor(selectedExperimentTrial.showBlackScreen);
+        //SetScreenColor(selectedExperimentTrial.showBlackScreen);
         SetOffset(selectedExperimentTrial.offset);
 
         Debug.Log(selectedExperimentTrial.name);
@@ -823,7 +910,7 @@ public class ExperimentsManager : MonoBehaviour
         if (timerSaveData <= selectedExperimentTrial.delayGo)
         {
             // TODO: implement save data in Vicon
-            Debug.Log("Saving data!");
+            //Debug.Log("Saving data!");
         }
 
         timerSaveData += Time.deltaTime;
@@ -839,7 +926,14 @@ public class ExperimentsManager : MonoBehaviour
     /// </summary>
     private void Reset()
     {
+        if (!selectedExperimentTrial.name.Contains("NoCible") && !selectedExperimentTrial.name.Contains("NoCibles"))
+            EnableTargetsHand();
+        EnableTargetElbow(0);
+
+        // FOR TESTING, CAN CAUSE PROBLEMS
         SetAvatarIK(true);
+        factorOffsetOptions.factor = 0;
+
         SetScreenColor(false);
         SetOffset(EOffset.Default);
         ArduinoManager.Instance.deactivateVibrations();
@@ -861,9 +955,6 @@ public class ExperimentsManager : MonoBehaviour
         currentMoveAvatarPhase = 1;
         delayBeforeStart = 4.0f;
         delayText.text = "Essai commence dans ... secondes ";
-        viconData.enabled = true;
-        DominantHandPicker.Instance.VirtualElbowPosition.GetComponent<ArmIK>().enabled = false;
-        factorOffsetOptions.gameObject.SetActive(false);
     }
     
     bool shouldExecuteExperimentalTrial()
@@ -911,8 +1002,9 @@ public class ExperimentsManager : MonoBehaviour
                 ExecuteLabViewSignal();
 
             if (!selectedExperimentTrial.isAvatarHumanControlled && selectedTargetHand is not null)
-            {                                
-               MoveAvatarCinematicMode(HandIK, ElbowIK, TargetsHand.transform.Find("R").position, TargetsElbow.transform.Find("R").position, selectedTargetHand.position, selectedTargetElbow.position);
+            {
+                MoveAvatarCinematicMode(HandIK, ElbowIK, TargetsHand.transform.Find("R").position, TargetsElbow.transform.Find("R").position, selectedTargetHand.position, selectedTargetElbow.position);
+                //MoveAvatar2Bones(HandIK, ElbowIK, TargetsHand.transform.Find("R").position, TargetsElbow.transform.Find("R").position, selectedTargetHand.position, selectedTargetElbow.position);
             }
 
             if (chronometer is not null && selectedExperimentTrial.showChronometer)
@@ -924,10 +1016,19 @@ public class ExperimentsManager : MonoBehaviour
         {
             // Remove the completed experiment trial from the list and reset game state
             experimentalTrials.RemoveAt(0);
+            Debug.Log(selectedExperimentTrial);
             Reset();
             isDoingExperienceTrial = false;
         }
     }
+
+    // TODO: Temporary, should be in another class handling UI inputs
+    private bool buttonClickedForNextRepetition = false;
+    void ButtonClicked()
+    {
+        buttonClickedForNextRepetition = true;
+    }
+    // TODO: Temporary, should be in another class handling UI inputs
 
     /// <summary>
     /// This coroutine waits for the user to press the space key.
@@ -940,6 +1041,7 @@ public class ExperimentsManager : MonoBehaviour
     private IEnumerator WaitForInput()
     {
         yield return new WaitUntil(() => Input.GetKeyUp(KeyCode.Space));
+        buttonClickedForNextRepetition = false;
 
         // The user has pressed the space key, continue with the experiment
         delayText.text = "";
