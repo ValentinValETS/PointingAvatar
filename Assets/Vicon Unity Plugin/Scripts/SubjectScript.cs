@@ -103,7 +103,7 @@ namespace UnityVicon
         Quaternion Rot = new Quaternion((float)ORot.Rotation[0], (float)ORot.Rotation[1], (float)ORot.Rotation[2], (float)ORot.Rotation[3]);
                 // mapping right hand to left hand flipping x
 
-                if (BoneName == "hips" || BoneName == "thigh.R" || BoneName == "thigh.L" || BoneName == "spine" || BoneName == "chest" || BoneName == "chest1")
+                if (BoneName == "hips" || BoneName == "thigh.R" || BoneName == "thigh.L" || BoneName == "spine" || BoneName == "chest" || BoneName == "chest1" || BoneName == "shin.R" || BoneName == "shin.L")
                 {
                     //DO NOTHING
                 }
@@ -114,22 +114,22 @@ namespace UnityVicon
                 }
                 
                 // Fix the avatar to be in a seating position
-                if (BoneName == "thigh.R")
-                {
-                    Bone.localRotation = Quaternion.Euler(-260f, 0f, 0f);
-                }
-                if (BoneName == "thigh.L")
-                {
-                    Bone.localRotation = Quaternion.Euler(-260f, 0f, 0f);
-                }
-                if (BoneName == "shin.R")
-                {
-                    Bone.localRotation = Quaternion.Euler(70f, 0f, 0f);
-                }
-                if (BoneName == "shin.L")
-                {
-                    Bone.localRotation = Quaternion.Euler(70f, 0f, 0f);
-                }
+                //if (BoneName == "thigh.R")
+                //{
+                //    Bone.localRotation = Quaternion.Euler(-260f, 0f, 0f);
+                //}
+                //if (BoneName == "thigh.L")
+                //{
+                //    Bone.localRotation = Quaternion.Euler(-260f, 0f, 0f);
+                //}
+                //if (BoneName == "shin.R")
+                //{
+                //    Bone.localRotation = Quaternion.Euler(70f, 0f, 0f);
+                //}
+                //if (BoneName == "shin.L")
+                //{
+                //    Bone.localRotation = Quaternion.Euler(70f, 0f, 0f);
+                //}
 
                 //Applies the rotations to the arms and forearms
                 // AJOUTER IF DOMINANT HAND == ...

@@ -178,20 +178,27 @@ public class ExperimentsManager : MonoBehaviour
     private Quaternion startedShoulderAngle;
     private Quaternion startedElbowAngle;
 
-    private Quaternion startElbowRotation;
-    private Quaternion startShoulderRotation;
-    private Vector3 startElbowPosition;
-    private Vector3 startShoulderPosition;
+    private Quaternion startArmRotation;
+    private Quaternion startUpperArmRotation;
+    private Vector3 startArmPosition;
+    private Vector3 startUpperArmPosition;
     private Vector3 segment_upperArm_start;
     private Vector3 segment_upperArm_end;
     private float shoulderToAngle;
     private Quaternion endShoulderRotation;
+    private Vector3 startHandPosition;
 
     private Vector3 segment_arm_start;
     private Vector3 segment_arm_end;
     private float elbowToAngle;
     private Quaternion endElbowRotation;
     private bool isInitiated;
+
+    public GameObject moveArmR;
+    public GameObject moveUpperArmR;
+    public GameObject reposeBras1;
+    public GameObject reposeBras2;
+    public GameObject reposeBras3;
 
 
     void Awake()
@@ -205,18 +212,25 @@ public class ExperimentsManager : MonoBehaviour
             Instance = this;
         }
 
+
     }
 
     // Start is called before the first frame update
     void Start()
     {
+
         // TODO: Temporary, should be in another class handling UI inputs
         if (button_startExperiment is not null)
             button_startExperiment.onClick.AddListener(ButtonClicked);
 
         if (GameObject.FindGameObjectWithTag("Avatar"))
         {
+            reposeBras1.transform.SetParent(DominantHandPicker.Instance.VirtualElbowPosition.transform);
+            reposeBras2.transform.SetParent(DominantHandPicker.Instance.VirtualElbowPosition.transform);
+            reposeBras3.transform.SetParent(DominantHandPicker.Instance.VirtualShoulderPosition.transform);
+
             GameObject avatar = GameObject.FindGameObjectWithTag("Avatar");
+            GameObject original = GameObject.FindGameObjectWithTag("Original");
 
             viconData = avatar.GetComponent<SubjectScript>();
 
@@ -240,7 +254,34 @@ public class ExperimentsManager : MonoBehaviour
 
             if (DominantHandPicker.Instance.dominantHand == EDominantHand.Right)
                 foreArmL.GetComponent<ArmIK>().enabled = false;
-            
+
+            Transform thighR = avatar.transform.Find("Unity compliant skeleton/hips/thigh.R").transform;
+            Transform thighL = avatar.transform.Find("Unity compliant skeleton/hips/thigh.L").transform;
+            Transform shinR = avatar.transform.Find("Unity compliant skeleton/hips/thigh.R/shin.R").transform;
+            Transform shinL = avatar.transform.Find("Unity compliant skeleton/hips/thigh.L/shin.L").transform;
+            Transform foot = avatar.transform.Find("Unity compliant skeleton/hips/thigh.L/shin.L/foot.L").transform;
+            Transform floor = GameObject.FindGameObjectWithTag("Floor").transform;
+            float distanceToFloor = foot.position.y - floor.position.y;
+
+            thighR.localRotation = Quaternion.Euler(-260f, 0f, 0f);
+            thighL.localRotation = Quaternion.Euler(-260f, 0f, 0f);
+            shinR.localRotation = Quaternion.Euler(88f, 0f, 0f);
+            shinL.localRotation = Quaternion.Euler(88f, 0f, 0f);
+            avatar.transform.position = new Vector3(avatar.transform.position.x, avatar.transform.position.y-distanceToFloor, avatar.transform.position.z);
+
+            Transform thighR_original = original.transform.Find("Unity compliant skeleton/hips/thigh.R").transform;
+            Transform thighL_original = original.transform.Find("Unity compliant skeleton/hips/thigh.L").transform;
+            Transform shinR_original = original.transform.Find("Unity compliant skeleton/hips/thigh.R/shin.R").transform;
+            Transform shinL_original = original.transform.Find("Unity compliant skeleton/hips/thigh.L/shin.L").transform;
+            Transform foot_original = original.transform.Find("Unity compliant skeleton/hips/thigh.L/shin.L/foot.L").transform;
+
+            thighR_original.localRotation = Quaternion.Euler(-260f, 0f, 0f);
+            thighL_original.localRotation = Quaternion.Euler(-260f, 0f, 0f);
+            shinR_original.localRotation = Quaternion.Euler(88f, 0f, 0f);
+            shinL_original.localRotation = Quaternion.Euler(88f, 0f, 0f);
+            original.transform.position = new Vector3(original.transform.position.x, original.transform.position.y - distanceToFloor, original.transform.position.z);
+
+
         }
 
 
@@ -351,6 +392,8 @@ public class ExperimentsManager : MonoBehaviour
 
         // Execute the current experiment trial
         ExecuteExperimentTrial();
+
+
     }
 
     /// <summary>
@@ -571,7 +614,7 @@ public class ExperimentsManager : MonoBehaviour
         }
     }
 
-    void MoveAvatarCinematicMode(GameObject handIK, GameObject elbowIK, Vector3 startHand, Vector3 startElbow, Vector3 endHand, Vector3 endElbow)
+    void MoveAvatarCinematicMode_old(GameObject handIK, GameObject elbowIK, Vector3 startHand, Vector3 startElbow, Vector3 endHand, Vector3 endElbow)
     {
 
         switch (currentMoveAvatarPhase)
@@ -579,63 +622,56 @@ public class ExperimentsManager : MonoBehaviour
             case 1:
                 if(!isInitiated)
                 {
-                    Vector3 segment_upperArm_actual = DominantHandPicker.Instance.VirtualShoulderPosition.transform.position - DominantHandPicker.Instance.VirtualElbowPosition.transform.position;
-                    Vector3 segment_upperArm_desired = DominantHandPicker.Instance.VirtualShoulderPosition.transform.position - startElbow;
-                    Quaternion beginShoulderAngle = DominantHandPicker.Instance.VirtualShoulderPosition.transform.rotation;
-                    shoulderToAngle = Vector3.SignedAngle(segment_upperArm_desired, segment_upperArm_actual, Vector3.up);
-                    DominantHandPicker.Instance.VirtualShoulderPosition.transform.rotation = beginShoulderAngle * Quaternion.Euler(shoulderToAngle, 0, 0);
+                    startArmRotation = moveArmR.transform.rotation;
+                    startUpperArmRotation = moveUpperArmR.transform.rotation;
+                    startArmPosition = moveArmR.transform.position;
+                    startUpperArmPosition = moveUpperArmR.transform.position;
+                    startHandPosition = DominantHandPicker.Instance.VirtualHandPosition.transform.position;
 
-                    Vector3 segment_arm_actual = DominantHandPicker.Instance.VirtualElbowPosition.transform.position - DominantHandPicker.Instance.VirtualHandPosition.transform.position;
-                    Vector3 segment_arm_desired = DominantHandPicker.Instance.VirtualElbowPosition.transform.position - startHand;
-                    Quaternion beginElbowAngle = DominantHandPicker.Instance.VirtualElbowPosition.transform.rotation;
-                    elbowToAngle = Vector3.SignedAngle(segment_arm_desired, segment_arm_actual, Vector3.up);
-                    if (DominantHandPicker.Instance.dominantHand == EDominantHand.Left)
-                    {
-                        elbowToAngle = -elbowToAngle;
-                    }
-                    DominantHandPicker.Instance.VirtualElbowPosition.transform.rotation = beginElbowAngle * Quaternion.Euler(elbowToAngle, 0, 0);
-
-                    startElbowRotation = DominantHandPicker.Instance.VirtualElbowPosition.transform.rotation;
-                    startShoulderRotation = DominantHandPicker.Instance.VirtualShoulderPosition.transform.rotation;
-                    startElbowPosition = DominantHandPicker.Instance.VirtualElbowPosition.transform.position;
-                    startShoulderPosition = DominantHandPicker.Instance.VirtualShoulderPosition.transform.position;
+                    Debug.DrawLine(startArmPosition, startHandPosition, Color.red, 6f);
+                    Debug.DrawLine(endElbow, endHand, Color.yellow, 6f);
+                    Debug.DrawLine(startUpperArmPosition, startArmPosition, Color.red, 6f);
+                    Debug.DrawLine(startUpperArmPosition, endElbow, Color.yellow, 6f);
 
                     isInitiated = true;
                 }
                 
-                Debug.DrawLine(startElbowPosition, DominantHandPicker.Instance.VirtualHandPosition.transform.position, Color.red, 6f);
-                Debug.DrawLine(endElbow, endHand, Color.yellow, 6f);
-                Debug.DrawLine(startShoulderPosition, startElbowPosition, Color.red, 6f);
-                Debug.DrawLine(startShoulderPosition, endElbow, Color.yellow, 6f);
-
-                segment_upperArm_start = startShoulderPosition - startElbowPosition;
-                segment_upperArm_end = startShoulderPosition - endElbow;
-                shoulderToAngle = Vector3.SignedAngle(segment_upperArm_end, segment_upperArm_start, Vector3.up);
-                if (DominantHandPicker.Instance.dominantHand == EDominantHand.Left)
-                {
-                    shoulderToAngle = -shoulderToAngle;
-                }
-                endShoulderRotation = startShoulderRotation * Quaternion.Euler(shoulderToAngle, 0, 0);
-
-                segment_arm_start = startElbowPosition - startHand;
-                segment_arm_end = endElbow - endHand;
-                elbowToAngle = Vector3.SignedAngle(segment_arm_end, segment_arm_start, Vector3.up);
-                if (DominantHandPicker.Instance.dominantHand == EDominantHand.Left)
-                {
-                    elbowToAngle = -elbowToAngle;
-                }
-                endElbowRotation = startElbowRotation * Quaternion.Euler(elbowToAngle, 0, 0);
-
-                Debug.Log("shoulderToAngle=" + shoulderToAngle+ ", elbowToAngle=" + elbowToAngle);
 
                 currentMoveAvatarPhase++;
                 break;
             case 2:
                 timerMoveAvatar += Time.deltaTime;
 
-                DominantHandPicker.Instance.VirtualShoulderPosition.transform.rotation = Quaternion.Slerp(startShoulderRotation, endShoulderRotation, timerMoveAvatar / selectedExperimentTrial.delayGo);
-                DominantHandPicker.Instance.VirtualElbowPosition.transform.rotation = Quaternion.Slerp(startElbowRotation, endElbowRotation, timerMoveAvatar / selectedExperimentTrial.delayGo);
-                
+                //find the vector pointing from our position to the target
+                Vector3 _directionElbow = (endElbow - startArmPosition).normalized;
+                Vector3 _directionWrist = (endHand - startHandPosition).normalized;
+                _directionElbow.y = 0;
+                _directionWrist.y = 0;
+
+                Debug.DrawLine(endElbow, startArmPosition, Color.blue, 6f);
+                Debug.DrawLine(endHand, startHandPosition, Color.blue, 6f);
+
+                //create the rotation we need to be in to look at the target
+                Quaternion _lookRotationElbow = Quaternion.LookRotation(_directionElbow,Vector3.up);
+                Quaternion _lookRotationWrist = Quaternion.LookRotation(_directionWrist, Vector3.up);
+
+                shoulderToAngle = Vector3.SignedAngle(segment_upperArm_end, segment_upperArm_start, Vector3.up);
+                if (DominantHandPicker.Instance.dominantHand == EDominantHand.Left)
+                {
+                    shoulderToAngle = -shoulderToAngle;
+                }
+                endShoulderRotation = startUpperArmRotation * Quaternion.Euler(shoulderToAngle, 0, 0);
+
+                //rotate us over time according to speed until we are in the required rotation
+                Quaternion upperArmRotation = Quaternion.Slerp(startUpperArmRotation, _lookRotationElbow, timerMoveAvatar / selectedExperimentTrial.delayGo);
+                Quaternion armRotation = Quaternion.Slerp(startUpperArmRotation, _lookRotationWrist, timerMoveAvatar / selectedExperimentTrial.delayGo);
+
+                //Apply the rotation 
+                moveUpperArmR.transform.rotation = upperArmRotation;
+                moveArmR.transform.rotation = armRotation;
+
+                // put 0 on the axys you do not want for the rotation object to rotate
+                //moveShoulderR.transform.eulerAngles = new Vector3(moveShoulderR.transform.eulerAngles.x, 0, 0);
 
                 if (timerMoveAvatar >= selectedExperimentTrial.delayGo)
                 {
@@ -655,8 +691,218 @@ public class ExperimentsManager : MonoBehaviour
             case 4:
                 timerMoveAvatar += Time.deltaTime;
 
-                DominantHandPicker.Instance.VirtualShoulderPosition.transform.rotation = Quaternion.Slerp(endShoulderRotation, startShoulderRotation, timerMoveAvatar / selectedExperimentTrial.delayGoBack);
-                DominantHandPicker.Instance.VirtualElbowPosition.transform.rotation = Quaternion.Slerp(endElbowRotation, startElbowRotation, timerMoveAvatar / selectedExperimentTrial.delayGoBack);               
+                ////find the vector pointing from our position to the target
+                // _directionElbow = (endElbow - startElbowPosition).normalized;
+                // _directionHand = (endHand - startHandPosition).normalized;
+
+                ////create the rotation we need to be in to look at the target
+                // _lookRotationElbow = Quaternion.LookRotation(_directionElbow);
+                // _lookRotationHand = Quaternion.LookRotation(_directionHand);
+
+                ////rotate us over time according to speed until we are in the required rotation
+                //MoveArmR.transform.rotation = Quaternion.Slerp(MoveArmR.transform.rotation, Quaternion.Inverse(_lookRotationElbow), timerMoveAvatar / selectedExperimentTrial.delayGo);
+                //moveHandR.transform.rotation = Quaternion.Slerp(moveHandR.transform.rotation, Quaternion.Inverse(_lookRotationHand), timerMoveAvatar / selectedExperimentTrial.delayGo);
+
+                if (timerMoveAvatar >= selectedExperimentTrial.delayGoBack)
+                {
+                    timerMoveAvatar = 0;
+                    currentMoveAvatarPhase = 1;
+                }
+                break;
+        }
+    }
+    void MoveAvatarCinematicMode_old2(GameObject handIK, GameObject elbowIK, Vector3 startHand, Vector3 startElbow, Vector3 endHand, Vector3 endElbow)
+    {
+
+        switch (currentMoveAvatarPhase)
+        {
+            case 1:
+                if (!isInitiated)
+                {
+                    Vector3 segment_upperArm_actual = DominantHandPicker.Instance.VirtualShoulderPosition.transform.position - DominantHandPicker.Instance.VirtualElbowPosition.transform.position;
+                    Vector3 segment_upperArm_desired = DominantHandPicker.Instance.VirtualShoulderPosition.transform.position - startElbow;
+                    Quaternion beginShoulderAngle = DominantHandPicker.Instance.VirtualShoulderPosition.transform.rotation;
+                    shoulderToAngle = Vector3.SignedAngle(segment_upperArm_desired, segment_upperArm_actual, Vector3.up);
+                    DominantHandPicker.Instance.VirtualShoulderPosition.transform.rotation = beginShoulderAngle * Quaternion.Euler(shoulderToAngle, 0, 0);
+
+                    Vector3 segment_arm_actual = DominantHandPicker.Instance.VirtualElbowPosition.transform.position - DominantHandPicker.Instance.VirtualHandPosition.transform.position;
+                    Vector3 segment_arm_desired = DominantHandPicker.Instance.VirtualElbowPosition.transform.position - startHand;
+                    Quaternion beginElbowAngle = DominantHandPicker.Instance.VirtualElbowPosition.transform.rotation;
+                    elbowToAngle = Vector3.SignedAngle(segment_arm_desired, segment_arm_actual, Vector3.up);
+                    if (DominantHandPicker.Instance.dominantHand == EDominantHand.Left)
+                    {
+                        elbowToAngle = -elbowToAngle;
+                    }
+                    DominantHandPicker.Instance.VirtualElbowPosition.transform.rotation = beginElbowAngle * Quaternion.Euler(elbowToAngle, 0, 0);
+
+                    startArmRotation = DominantHandPicker.Instance.VirtualElbowPosition.transform.rotation;
+                    startUpperArmRotation = DominantHandPicker.Instance.VirtualShoulderPosition.transform.rotation;
+                    startArmPosition = DominantHandPicker.Instance.VirtualElbowPosition.transform.position;
+                    startUpperArmPosition = DominantHandPicker.Instance.VirtualShoulderPosition.transform.position;
+
+                    isInitiated = true;
+                }
+
+                Debug.DrawLine(startArmPosition, DominantHandPicker.Instance.VirtualHandPosition.transform.position, Color.red, 60f);
+                Debug.DrawLine(endElbow, endHand, Color.yellow, 60f);
+                Debug.DrawLine(startUpperArmPosition, startArmPosition, Color.red, 60f);
+                Debug.DrawLine(startUpperArmPosition, endElbow, Color.yellow, 60f);
+
+                segment_upperArm_start = startUpperArmPosition - startArmPosition;
+                segment_upperArm_end = startUpperArmPosition - endElbow;
+                shoulderToAngle = Vector3.SignedAngle(segment_upperArm_end, segment_upperArm_start, Vector3.up);
+                if (DominantHandPicker.Instance.dominantHand == EDominantHand.Left)
+                {
+                    shoulderToAngle = -shoulderToAngle;
+                }
+                endShoulderRotation = startUpperArmRotation * Quaternion.Euler(shoulderToAngle, 0, 0);
+
+                segment_arm_start = startArmPosition - startHand;
+                segment_arm_end = endElbow - endHand;
+                elbowToAngle = Vector3.SignedAngle(segment_arm_end, segment_arm_start, Vector3.up);
+                if (DominantHandPicker.Instance.dominantHand == EDominantHand.Left)
+                {
+                    elbowToAngle = -elbowToAngle;
+                }
+                endElbowRotation = startArmRotation * Quaternion.Euler(elbowToAngle, 0, 0);
+
+                Debug.Log("shoulderToAngle=" + shoulderToAngle + ", elbowToAngle=" + elbowToAngle);
+
+                currentMoveAvatarPhase++;
+                break;
+            case 2:
+
+                break;
+            case 3:
+                timerMoveAvatar += Time.deltaTime;
+
+                DominantHandPicker.Instance.VirtualShoulderPosition.transform.rotation = Quaternion.Slerp(startUpperArmRotation, endShoulderRotation, timerMoveAvatar / selectedExperimentTrial.delayGo);
+                DominantHandPicker.Instance.VirtualElbowPosition.transform.rotation = Quaternion.Slerp(startArmRotation, endElbowRotation, timerMoveAvatar / selectedExperimentTrial.delayGo);
+
+
+                if (timerMoveAvatar >= selectedExperimentTrial.delayGo)
+                {
+                    timerMoveAvatar = 0;
+                    currentMoveAvatarPhase++;
+                }
+                break;
+            case 4:
+                timerMoveAvatar += Time.deltaTime;
+
+                if (timerMoveAvatar >= selectedExperimentTrial.delayStay)
+                {
+                    timerMoveAvatar = 0;
+                    currentMoveAvatarPhase++;
+                }
+                break;
+            case 5:
+                timerMoveAvatar += Time.deltaTime;
+
+                DominantHandPicker.Instance.VirtualShoulderPosition.transform.rotation = Quaternion.Slerp(endShoulderRotation, startUpperArmRotation, timerMoveAvatar / selectedExperimentTrial.delayGoBack);
+                DominantHandPicker.Instance.VirtualElbowPosition.transform.rotation = Quaternion.Slerp(endElbowRotation, startArmRotation, timerMoveAvatar / selectedExperimentTrial.delayGoBack);
+
+                if (timerMoveAvatar >= selectedExperimentTrial.delayGoBack)
+                {
+                    timerMoveAvatar = 0;
+                    currentMoveAvatarPhase = 1;
+                }
+                break;
+        }
+    }
+    void MoveAvatarCinematicMode(GameObject handIK, GameObject elbowIK, Transform startHand, Transform startElbow, Transform endHand, Transform endElbow)
+    {
+        float angleModifier = 20;
+        switch (currentMoveAvatarPhase)
+        {
+            case 1:
+                // Place the arm and upperarm at the rest position of the targets, and save the positions and rotations at this moment
+                if (!isInitiated)
+                {
+                    Vector3 segment_upperArm_actual = DominantHandPicker.Instance.VirtualShoulderPosition.transform.position - DominantHandPicker.Instance.VirtualElbowPosition.transform.position;
+                    Vector3 segment_upperArm_desired = DominantHandPicker.Instance.VirtualShoulderPosition.transform.position - startElbow.position;
+                    Quaternion beginShoulderAngle = DominantHandPicker.Instance.VirtualShoulderPosition.transform.rotation;
+                    shoulderToAngle = Vector3.SignedAngle(new Vector3(segment_upperArm_desired.x, 0, segment_upperArm_desired.z), new Vector3(segment_upperArm_actual.x, 0, segment_upperArm_actual.z), Vector3.up);
+                    float shoulderToAngle2 = Vector3.SignedAngle(new Vector3(segment_upperArm_desired.x, segment_upperArm_desired.y, 0), new Vector3(segment_upperArm_actual.x, segment_upperArm_actual.y, 0), Vector3.up);
+                    DominantHandPicker.Instance.VirtualShoulderPosition.transform.rotation = beginShoulderAngle * Quaternion.Euler(shoulderToAngle- angleModifier, 0, -shoulderToAngle2);
+
+                    Vector3 segment_arm_actual = DominantHandPicker.Instance.VirtualElbowPosition.transform.position - DominantHandPicker.Instance.VirtualHandPosition.transform.position;
+                    Vector3 segment_arm_desired = DominantHandPicker.Instance.VirtualElbowPosition.transform.position - startHand.position;
+                    Quaternion beginElbowAngle = DominantHandPicker.Instance.VirtualElbowPosition.transform.rotation;
+                    elbowToAngle = Vector3.SignedAngle(new Vector3(segment_arm_desired.x,0, segment_arm_desired.z), new Vector3(segment_arm_actual.x,0, segment_arm_actual.z), Vector3.up);
+                    float elbowToAngle2= Vector3.SignedAngle(new Vector3(0, segment_arm_desired.y, segment_arm_desired.z), new Vector3(0, segment_arm_actual.y, segment_arm_actual.z), Vector3.up);
+
+
+                    if (DominantHandPicker.Instance.dominantHand == EDominantHand.Left)
+                    {
+                        elbowToAngle = -elbowToAngle;
+                    }
+                    DominantHandPicker.Instance.VirtualElbowPosition.transform.rotation = beginElbowAngle * Quaternion.Euler(elbowToAngle, 0, -elbowToAngle2);
+
+                    startArmRotation = DominantHandPicker.Instance.VirtualElbowPosition.transform.rotation;
+                    startUpperArmRotation = DominantHandPicker.Instance.VirtualShoulderPosition.transform.rotation;
+                    startArmPosition = DominantHandPicker.Instance.VirtualElbowPosition.transform.position;
+                    startUpperArmPosition = DominantHandPicker.Instance.VirtualShoulderPosition.transform.position;
+
+                    isInitiated = true;
+                }
+                // Draws the rest and final arm and upperarm segments 
+                Debug.DrawLine(startArmPosition, DominantHandPicker.Instance.VirtualHandPosition.transform.position, Color.red, 60f);
+                Debug.DrawLine(endElbow.position, endHand.position, Color.yellow, 60f);
+                Debug.DrawLine(startUpperArmPosition, startArmPosition, Color.red, 60f);
+                Debug.DrawLine(startUpperArmPosition, endElbow.position, Color.yellow, 60f);
+
+                // Calculates the final rotations of the elbow and shoulder
+                segment_upperArm_start = startUpperArmPosition - startArmPosition;
+                segment_upperArm_end = startUpperArmPosition - endElbow.position;
+                shoulderToAngle = Vector3.SignedAngle(new Vector3(segment_upperArm_end.x,0, segment_upperArm_end.z), new Vector3( segment_upperArm_start.x,0, segment_upperArm_start.z), Vector3.up);
+                float shoulderToAngle3 = Vector3.SignedAngle(new Vector3(segment_upperArm_end.x, segment_upperArm_end.y, 0), new Vector3(segment_upperArm_start.x, segment_upperArm_end.y, 0), Vector3.up);
+                if (DominantHandPicker.Instance.dominantHand == EDominantHand.Left)
+                {
+                    shoulderToAngle = -shoulderToAngle;
+                }
+                endShoulderRotation = startUpperArmRotation * Quaternion.Euler(shoulderToAngle- angleModifier, 0, -shoulderToAngle3);
+
+                segment_arm_start = startElbow.position - startHand.position;
+                segment_arm_end = endElbow.position - endHand.position;
+                elbowToAngle = Vector3.SignedAngle(new Vector3(segment_arm_end.x,0, segment_arm_end.z), new Vector3(segment_arm_start.x,0, segment_arm_start.z), Vector3.up);
+                float elbowToAngle3 = Vector3.SignedAngle(new Vector3(segment_arm_end.x, segment_arm_end.y, 0), new Vector3(segment_arm_start.x, segment_arm_start.y, 0), Vector3.up);
+                if (DominantHandPicker.Instance.dominantHand == EDominantHand.Left)
+                {
+                    elbowToAngle = -elbowToAngle;
+                }
+                endElbowRotation = startArmRotation * Quaternion.Euler(elbowToAngle, 0, elbowToAngle3);
+
+                Debug.Log("shoulderToAngle=" + shoulderToAngle + ", elbowToAngle=" + elbowToAngle);
+
+                currentMoveAvatarPhase++;
+                break;
+            case 2:
+                timerMoveAvatar += Time.deltaTime;
+
+                DominantHandPicker.Instance.VirtualShoulderPosition.transform.rotation = Quaternion.Slerp(startUpperArmRotation, endShoulderRotation, timerMoveAvatar / selectedExperimentTrial.delayGo);
+                DominantHandPicker.Instance.VirtualElbowPosition.transform.rotation = Quaternion.Slerp(startArmRotation, endElbowRotation, timerMoveAvatar / selectedExperimentTrial.delayGo);
+
+
+                if (timerMoveAvatar >= selectedExperimentTrial.delayGo)
+                {
+                    timerMoveAvatar = 0;
+                    currentMoveAvatarPhase++;
+                }
+                break;
+            case 3:
+                timerMoveAvatar += Time.deltaTime;
+
+                if (timerMoveAvatar >= selectedExperimentTrial.delayStay)
+                {
+                    timerMoveAvatar = 0;
+                    currentMoveAvatarPhase++;
+                }
+                break;
+            case 4:
+                timerMoveAvatar += Time.deltaTime;
+
+                DominantHandPicker.Instance.VirtualShoulderPosition.transform.rotation = Quaternion.Slerp(endShoulderRotation, startUpperArmRotation, timerMoveAvatar / selectedExperimentTrial.delayGoBack);
+                DominantHandPicker.Instance.VirtualElbowPosition.transform.rotation = Quaternion.Slerp(endElbowRotation, startArmRotation, timerMoveAvatar / selectedExperimentTrial.delayGoBack);
 
                 if (timerMoveAvatar >= selectedExperimentTrial.delayGoBack)
                 {
@@ -1003,7 +1249,7 @@ public class ExperimentsManager : MonoBehaviour
 
             if (!selectedExperimentTrial.isAvatarHumanControlled && selectedTargetHand is not null)
             {
-                MoveAvatarCinematicMode(HandIK, ElbowIK, TargetsHand.transform.Find("R").position, TargetsElbow.transform.Find("R").position, selectedTargetHand.position, selectedTargetElbow.position);
+                MoveAvatarCinematicMode(HandIK, ElbowIK, TargetsHand.transform.Find("R"), TargetsElbow.transform.Find("R"), selectedTargetHand, selectedTargetElbow);
                 //MoveAvatar2Bones(HandIK, ElbowIK, TargetsHand.transform.Find("R").position, TargetsElbow.transform.Find("R").position, selectedTargetHand.position, selectedTargetElbow.position);
             }
 

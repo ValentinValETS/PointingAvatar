@@ -12,8 +12,8 @@ public class TargetCalibration : MonoBehaviour
     public Quaternion InitialShoulderRotation { get => initialShoulderRotation; set => initialShoulderRotation = value; }
     public Quaternion InitialElbowRotation { get => initialElbowRotation; set => initialElbowRotation = value; }
 
-    public GameObject RealLeftHand;
-    public GameObject RealRightHand;
+    //public GameObject RealLeftHand;
+    //public GameObject RealRightHand;
     private Quaternion initialShoulderRotation;
     private Quaternion initialElbowRotation;
 

@@ -10,6 +10,11 @@ TagManager:
   - HandTargetIK.R
   - ElbowTargetIK.L
   - ElbowTargetIK.R
+  - MoveHand.R
+  - MoveHand.L
+  - MoveElbow.R
+  - MoveElbow.L
+  - Floor
   layers:
   - Default
   - TransparentFX
